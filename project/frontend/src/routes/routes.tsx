@@ -8,6 +8,9 @@ import NotFound from '../pages/Not-found/Not-found';
 import Layout from '../components/Layout/Layout';
 import SignIn from '../pages/Sign-in/Sign-in';
 import SignUp from '../pages/Sign-up/Sign-up';
+import Basket from '../pages/Basket/Basket';
+import Profile from '../pages/Profile/Profile';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +18,12 @@ const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="/profile" element={<Profile />} />
+      </Route>
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="/basket" element={<Basket />} />
+      </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
   )

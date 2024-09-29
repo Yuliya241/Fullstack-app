@@ -4,6 +4,7 @@ import {
   Toolbar,
   Box,
   Typography,
+  Link,
 } from '@mui/material';
 import BaseButton from '../ui/Button';
 import SignOutButton from '../ui/SignOutButton';
@@ -57,8 +58,14 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
+            <Link href="/basket" sx={{ margin: '0 15px' }}>
+              <img src="assets/basket.svg" alt="basket" />
+            </Link>
             {cookies.user ? (
-              <SignOutButton />
+              <>
+                <BaseButton href="/profile">Profile</BaseButton>
+                <SignOutButton />
+              </>
             ) : (
               <>
                 <BaseButton href="/signin">Sign In</BaseButton>

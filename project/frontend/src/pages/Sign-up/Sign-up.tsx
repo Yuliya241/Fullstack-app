@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthFormData, FormType, AuthResponse } from '../../types/types';
 // import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
+import { useCookies } from 'react-cookie';
 
 export default function SignUp() {
   const {
@@ -17,6 +18,7 @@ export default function SignUp() {
   });
 
   const navigate = useNavigate();
+  const [, setCookie] = useCookies(['user']);
 
   const handleSignIn = async (data: AuthFormData) => {
     const { username, email, password, confirm_password } = data;
@@ -28,7 +30,7 @@ export default function SignUp() {
       confirm_password !== ''
     ) {
       try {
-        const response = await fetch('http://127.0.0.1:8000/register/', {
+        const response = await fetch('http://127.0.0.1:8000/api/register/', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -46,7 +48,7 @@ export default function SignUp() {
         const token = user.token;
         if (response.ok) {
           toast.success('User is created successfully.');
-          localStorage.setItem('user', token);
+          setCookie('user', token);
           navigate('/');
         } else {
           toast.error('Failed to sign up. Please try again.');

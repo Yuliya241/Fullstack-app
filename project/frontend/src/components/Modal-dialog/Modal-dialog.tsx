@@ -20,7 +20,7 @@ export default function BasicModal({
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/logout/', {
+      const response = await fetch('http://127.0.0.1:8000/api/logout/', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

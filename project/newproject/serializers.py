@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers, validators
 from django.contrib.auth.hashers import make_password
-from rest_framework.validators import UniqueValidator
-
+from .models import Book
 
 class UserSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(
@@ -28,7 +27,12 @@ class UserSerializer(serializers.ModelSerializer):
 
       return user
 
-      def validate(self, attrs):
-        if attrs.get('password') != attrs.get('confirm_password'):
-          raise serializers.ValidationError("Passwords don't match.")
-          return attrs
+  def validate(self, attrs):
+    if attrs.get('password') != attrs.get('confirm_password'):
+      raise serializers.ValidationError("Passwords don't match.")
+    return attrs
+
+class BookSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Book
+    fields = '__all__'

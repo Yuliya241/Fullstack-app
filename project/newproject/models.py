@@ -1,10 +1,13 @@
-# from django.db import models
-# from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-# class CustomUser(AbstractUser):
-#     email = models.EmailField(unique=True)
+class Book(models.Model):
+    image = str
+    title = str
+    author = str
+    oldPrice = float
+    specialPrice = float
+    regularPrice = float
 
-#     # Add custom fields here, if needed
-
-#     def __str__(self):
-#         return self.username
+    def __str__(self):
+      return self.username

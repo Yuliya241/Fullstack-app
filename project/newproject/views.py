@@ -2,10 +2,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.models import AuthToken
-from .serializers import UserSerializer
+from .serializers import BookSerializer, UserSerializer
+from newproject.models import Book
+from rest_framework import generics
+# from newproject.parser import title, image, author, oldPrice, specialPrice, regularPrice
 
 @api_view(['POST'])
-def login(request):
+def loginApi(request):
   serializer = AuthTokenSerializer(data=request.data)
   serializer.is_valid(raise_exception=True)
   user = serializer.validated_data['user']
@@ -15,12 +18,13 @@ def login(request):
     'user': {
       'username': user.username,
       'email': user.email,
+      'id': user.id,
     },
     'token': token
   })
 
 @api_view(['GET'])
-def profile(request):
+def profileApi(request):
   user = request.user
 
   if user.is_authenticated:
@@ -28,13 +32,14 @@ def profile(request):
       'user': {
         'username': user.username,
         'email': user.email,
+        'id': user.id,
     },
     })
 
   return Response({'error': 'user is not authenticated'}, status=400)
 
 @api_view(['POST'])
-def register(request):
+def registerApi(request):
   serializer = UserSerializer(data=request.data)
   serializer.is_valid(raise_exception=True)
 
@@ -48,3 +53,19 @@ def register(request):
     },
     'token': token
   })
+
+class BookAPI(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    book = Book()
+
+    # book.image = image
+    # book.title = title
+    # book.author = author
+    # book.oldPrice = oldPrice
+    # book.specialPrice = specialPrice
+    # book.regularPrice = regularPrice
+
+    # book.save()
+
