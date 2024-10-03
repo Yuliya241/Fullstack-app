@@ -110,4 +110,4 @@ dist
 myenv
 
 # Parsing
-parsed.csv
+parsing_popular.csv

@@ -1,6 +1,5 @@
 from django.db import models
-
-class Book(models.Model):
+class Books(models.Model):
     image = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -9,6 +8,4 @@ class Book(models.Model):
     regularPrice = models.FloatField()
 
     def __str__(self):
-      return self.image + ' ' + self.title + ' ' + self.author + ' ' + self.regularPrice
-    class Meta:
-      app_label = 'Book'
+      return self.title

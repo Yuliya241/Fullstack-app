@@ -8,7 +8,7 @@ django.setup()
 from bs4 import BeautifulSoup
 import requests
 import csv
-from models import Book
+from models import Books
 import time, random
 
 def parser(url:str, max_item: int):
@@ -51,7 +51,7 @@ def parser(url:str, max_item: int):
       imageParent = book.find('div', class_='images-container')
       image = imageParent.find('img')['src']
 
-      list_books.append(Book(
+      list_books.append(Books(
         image = image,
         title = title,
         author = author,
@@ -66,7 +66,7 @@ def parser(url:str, max_item: int):
 
 
 def create_csv():
-  with open(f"parsed.csv", mode="w", newline="\n") as file:
+  with open(f"parsing_popular.csv", mode="w", newline="\n") as file:
     writer = csv.writer(file)
     writer.writerow([
       "image",
@@ -77,8 +77,8 @@ def create_csv():
       "regularPrice"
     ])
 
-def write_csv(books: list[Book]):
-  with open(f"parsed.csv", mode="a", newline="\n") as file:
+def write_csv(books: list[Books]):
+  with open(f"parsing_popular.csv", mode="a", newline="\n") as file:
     writer = csv.writer(file)
     for book in books:
       writer.writerow([

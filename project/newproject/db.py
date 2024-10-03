@@ -7,7 +7,7 @@ class ImportToPostgres:
   @staticmethod
   def get_books():
     books = []
-    with open('parsed.csv', newline='') as csvfile:
+    with open('parsing_popular.csv', newline='') as csvfile:
       reader = csv.DictReader(csvfile, delimiter=',')
       for row in reader:
         books.append(row['image'])
@@ -31,7 +31,7 @@ class ImportToPostgres:
   
   def get_connection(self):
     try:
-      connection = psycopg2.connect(dbname="postgres",
+      connection = psycopg2.connect(dbname="booksbase",
                                     user="postgres",
                                     password="12345",
                                     host="localhost",
