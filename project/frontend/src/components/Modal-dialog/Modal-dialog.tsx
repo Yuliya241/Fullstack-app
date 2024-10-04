@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
+import { API } from '../../enums/enums';
 
 export default function BasicModal({
   open,
@@ -20,7 +21,7 @@ export default function BasicModal({
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/logout/', {
+      const response = await fetch(API.LOGOUT, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -30,15 +31,15 @@ export default function BasicModal({
       });
 
       if (response.ok) {
-        toast.success('You have successfully sign out.');
+        toast.success('Вы успешно вышли из учетной записи.');
         cookies.remove('user', { path: '/' });
         navigate('/');
       } else {
-        toast.error('Failed to sign out. Please try again.');
+        toast.error('Ошибка выхода. Попробуйте снова.');
       }
     } catch (e) {
-      console.error('Error during sign out:', e);
-      toast.error('An error occurred during sign in. Please try again.');
+      console.error('Ошибка выхода:', e);
+      toast.error('Ошибка во время попытки выхода. Попробуйте снова.');
     }
   };
 
@@ -68,7 +69,7 @@ export default function BasicModal({
           component="h2"
           textAlign={'center'}
         >
-          Are you sure you want to sign out?
+          Вы уверены, что хотите выйти?
         </Typography>
         <Stack
           direction="row"
@@ -88,7 +89,7 @@ export default function BasicModal({
             }}
             onClick={handleClose}
           >
-            Cancel
+            Отмена
           </Button>
           <Button
             variant="contained"
@@ -104,7 +105,7 @@ export default function BasicModal({
             }}
             onClick={handleSignOut}
           >
-            Sign Out
+            Выход
           </Button>
         </Stack>
       </Box>

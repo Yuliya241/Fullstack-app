@@ -5,9 +5,9 @@ export default function NotFound() {
   return (
     <div className={styles.wrapper}>
       <p className={styles.image}>404</p>
-      <span className={styles.text}>Sorry, the page is Not Found</span>
+      <span className={styles.text}>Извините, страница не найдена</span>
       <Link to="/" className={styles.button}>
-        GO HOME
+        На Главную
       </Link>
     </div>
   );

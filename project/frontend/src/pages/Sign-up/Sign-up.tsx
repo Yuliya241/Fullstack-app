@@ -2,10 +2,12 @@
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthFormData, FormType, AuthResponse } from '../../types/types';
+import { FormType } from '../../types/types';
 // import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
 import { useCookies } from 'react-cookie';
+import { API } from '../../enums/enums';
+import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
 
 export default function SignUp() {
   const {
@@ -30,7 +32,7 @@ export default function SignUp() {
       confirm_password !== ''
     ) {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/register/', {
+        const response = await fetch(API.REGISTER, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -47,15 +49,15 @@ export default function SignUp() {
         const user: AuthResponse = await response.json();
         const token = user.token;
         if (response.ok) {
-          toast.success('User is created successfully.');
+          toast.success('Учетная запись успешно создана.');
           setCookie('user', token);
           navigate('/');
         } else {
-          toast.error('Failed to sign up. Please try again.');
+          toast.error('Ошибка регистрации. Попробуйте снова.');
         }
       } catch (e) {
-        console.error('Error during sign up:', e);
-        toast.error('An error occurred during sign up. Please try again.');
+        console.error('Ошибка во время регистрации:', e);
+        toast.error('Ошибка во время попытки зарегистрироваться. Попробуйте снова.');
       }
     }
   };
@@ -71,7 +73,7 @@ export default function SignUp() {
         }}
       >
         <Typography component="h1" variant="h5">
-          SIGN UP
+         РЕГИСТРАЦИЯ
         </Typography>
         <Box
           component="form"
@@ -90,7 +92,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="username"
-                label="Username"
+                label="Имя"
                 autoComplete="username"
                 // error={!!errors.username}
                 // helperText={errors.username?.message}
@@ -108,7 +110,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
-                label="Email"
+                label="Электронная почта"
                 autoComplete="email"
                 // error={!!errors.email}
                 // helperText={errors.email ? <>{t(errors.email.message)}</> : null}
@@ -125,7 +127,7 @@ export default function SignUp() {
                 margin="normal"
                 required
                 fullWidth
-                label="Password"
+                label="Пароль"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -144,7 +146,7 @@ export default function SignUp() {
                 margin="normal"
                 required
                 fullWidth
-                label="Confirm password"
+                label="Повторить пароль"
                 type="password"
                 id="confirmPassword"
                 autoComplete="new-password"
@@ -170,7 +172,7 @@ export default function SignUp() {
               },
             }}
           >
-            Sign Up
+            Зарегистрироваться
           </Button>
           <p
             style={{
@@ -181,9 +183,9 @@ export default function SignUp() {
               color: 'rgba(0, 0, 0, 0.54)',
             }}
           >
-            Already have an account?
+            Уже зарегистрированы?
             <Link to="/signin" style={{ color: 'black' }}>
-              Sign In
+              Войти
             </Link>
           </p>
         </Box>

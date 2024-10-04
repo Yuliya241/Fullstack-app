@@ -11,18 +11,3 @@ export type State = {
 };
 
 export type FormType = yup.InferType<typeof schema>;
-
-export interface AuthFormData {
-  username: string;
-  email: string;
-  password: string;
-  confirm_password?: string;
-}
-
-export interface AuthResponse {
-  user: {
-    username: string;
-    email: string;
-  };
-  token: string;
-}

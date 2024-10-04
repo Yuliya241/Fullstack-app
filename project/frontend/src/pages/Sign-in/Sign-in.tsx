@@ -2,10 +2,12 @@
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthFormData, FormType, AuthResponse } from '../../types/types';
+import { FormType } from '../../types/types';
 // import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
 import { useCookies } from 'react-cookie';
+import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
+import { API } from '../../enums/enums';
 
 const SignIn = () => {
   const {
@@ -25,7 +27,7 @@ const SignIn = () => {
 
     if (username !== '' || password !== '') {
       try {
-        const response = await fetch('http://127.0.0.1:8000/api/login/', {
+        const response = await fetch(API.LOGIN, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -40,15 +42,15 @@ const SignIn = () => {
         const user: AuthResponse = await response.json();
         const token = user.token;
         if (response.ok) {
-          toast.success('You have successfully logged in.');
+          toast.success('Вы успешно вошли в учетную запись.');
           setCookie('user', token);
           navigate('/');
         } else {
-          toast.error('Failed to sign in. Please try again.');
+          toast.error('Ошибка входа. Попробуйте снова.');
         }
       } catch (e) {
-        console.error('Error during sign in:', e);
-        toast.error('An error occurred during sign in. Please try again.');
+        console.error('Ошибка во время попытки входа:', e);
+        toast.error('Ошибка во время попытки входа. Попробуйте снова.');
       }
     }
   };
@@ -64,7 +66,7 @@ const SignIn = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          SIGN IN
+          ЛОГИН
         </Typography>
         <Box
           component="form"
@@ -83,7 +85,7 @@ const SignIn = () => {
                 required
                 fullWidth
                 id="username"
-                label="Username"
+                label="Имя"
                 autoComplete="username"
                 // error={!!errors.username}
                 // helperText={errors.username?.message}
@@ -100,7 +102,7 @@ const SignIn = () => {
                 margin="normal"
                 required
                 fullWidth
-                label="Password"
+                label="Пароль"
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -126,7 +128,7 @@ const SignIn = () => {
               },
             }}
           >
-            Sign In
+            Войти
           </Button>
           <p
             style={{
@@ -137,9 +139,9 @@ const SignIn = () => {
               color: 'rgba(0, 0, 0, 0.54)',
             }}
           >
-            Don&apos;t have an account?{' '}
+            Нет учетной записи?{' '}
             <Link to="/signup" style={{ color: 'black' }}>
-              Sign Up
+              Зарегистрироваться
             </Link>
           </p>
         </Box>

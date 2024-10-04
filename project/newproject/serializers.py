@@ -35,4 +35,4 @@ class UserSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
   class Meta:
     model = Books
-    fields = ['image', 'title', 'author', 'oldPrice', 'specialPrice', 'regularPrice']
+    fields = ['image', 'title', 'author', 'oldprice', 'specialprice', 'regularprice']

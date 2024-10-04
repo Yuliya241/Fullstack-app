@@ -40,39 +40,39 @@ class ImportToPostgres:
     except (Exception, Error) as error:
       print("Ошибка при работе с PostgreSQL", error)
 
-  def create_books(self, connection):
-    cursor = connection.cursor()
-    cursor.execute(
-            """
-                CREATE TABLE IF NOT EXISTS popular_books
-                (
-                    id serial PRIMARY KEY,
-                    image text, 
-                    title text,
-                    author text,
-                    oldPrice real,
-                    specialPrice real,
-                    regularPrice real
-                )
-            """
-        )
-    connection.commit()
+  # def create_books(self, connection):
+  #   cursor = connection.cursor()
+  #   cursor.execute(
+  #           """
+  #               CREATE TABLE IF NOT EXISTS popular_books
+  #               (
+  #                   id serial PRIMARY KEY,
+  #                   image text, 
+  #                   title text,
+  #                   author text,
+  #                   oldPrice real,
+  #                   specialPrice real,
+  #                   regularPrice real
+  #               )
+  #           """
+  #       )
+  #   connection.commit()
 
   def insert(self, connection, data):
     cursor = connection.cursor()
-    execute_values(cursor, "INSERT INTO popular_books (image, title, author, oldPrice, specialPrice, regularPrice) VALUES %s", data)
+    execute_values(cursor, "INSERT INTO newproject_books (image, title, author, oldprice, specialprice,regularprice) VALUES %s", data)
     connection.commit()
 
   def save_to_postgres(self, data):
     connection = self.get_connection()
-    self.create_books(connection)
+    # self.create_books(connection)
     self.insert(connection, data)
 
   def run(self):
     books = self.get_books()
     # print(books)
     connection = self.get_connection()
-    self.create_books(connection)
+    # self.create_books(connection)
     self.insert(connection, books)
     self.save_to_postgres(books)
   

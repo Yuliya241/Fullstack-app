@@ -28,7 +28,7 @@ const SignOutButton = () => {
         }}
         onClick={handleSignOut}
       >
-        Sign Out
+        Выход
         <LogoutIcon sx={{ marginLeft: '5px' }} />
       </Button>
       <BasicModal open={open} handleClose={handleCloseModal} />

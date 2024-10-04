@@ -13,14 +13,14 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error) {
-    console.log(ErrorBoundaryValues.consoleError, error.message);
+    console.log(ErrorBoundaryValues.CONSOLE_ERROR, error.message);
   }
 
   public render() {
     if (this.state.hasError) {
       return (
         <h1 className={styles.error} data-testid="errorboundary">
-          Sorry.. Something went wrong...Try reloading the page.
+          Извините.. Что-то пошло не так...Попробуйте перезагрузить страницу.
         </h1>
       );
     }

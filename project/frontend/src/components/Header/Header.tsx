@@ -3,8 +3,8 @@ import {
   AppBar,
   Toolbar,
   Box,
-  Typography,
   Link,
+  Typography,
 } from '@mui/material';
 import BaseButton from '../ui/Button';
 import SignOutButton from '../ui/SignOutButton';
@@ -51,7 +51,29 @@ const Header = () => {
             justifyContent: 'space-between',
           })}
         >
-          <Typography>LOGO</Typography>
+          <Link href="/" sx={{
+            textDecoration: 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            transform: 'scale(1)',
+            transition: 'all 0.2s linear',
+            '&:hover': {
+              transform: 'scale(1.1)',
+            }
+          }}>
+            <Box sx={{ display: 'flex', height: '51px' }}>
+              <Typography sx={{color: '#03A9F4', fontSize: '40px'}} >b</Typography>
+              <Typography sx={{color: '#03A9F4', fontSize: '36px'}} >i</Typography>
+              <Typography sx={{ color: '#4CAF50', fontSize: '40px'}}>bl</Typography>
+              <Typography sx={{color: '#03A9F4', fontSize: '36px'}} >i</Typography>
+              <Typography sx={{color: '#f2f209', fontSize: '41px'}}>о.</Typography>
+              <Typography sx={{ color: '#f20808', fontSize: '40px'}}>by</Typography>
+            </Box>
+            <Typography sx={{ color: '#000000', fontSize: '11px', fontStyle: 'italic' }}>
+              КНИГИ НА ВСЕ СЛУЧАИ ЖИЗНИ
+            </Typography>
+          </Link>
           <Box
             sx={{
               display: 'flex',
@@ -63,13 +85,13 @@ const Header = () => {
             </Link>
             {cookies.user ? (
               <>
-                <BaseButton href="/profile">Profile</BaseButton>
+                <BaseButton href="/profile">Профиль</BaseButton>
                 <SignOutButton />
               </>
             ) : (
               <>
-                <BaseButton href="/signin">Sign In</BaseButton>
-                <BaseButton href="/signup">Sign up</BaseButton>
+                <BaseButton href="/signin">Войти</BaseButton>
+                <BaseButton href="/signup">Зарегистрироваться</BaseButton>
               </>
             )}
           </Box>
