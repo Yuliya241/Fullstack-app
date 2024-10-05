@@ -1,18 +1,16 @@
+import { Box } from '@mui/material';
 import { Book } from '../../interfaces/interfaces';
 import BookItem from '../Book-item/Book-item';
-// import styles from './Results-list.module.css';
 
 const BookList = ({ results }: { results: Book[] }) => {
   return (
     <>
-      {results.length ? (
-        <div>
+      {results.length && (
+        <Box sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
           {results.map((book: Book, index) => (
             <BookItem key={index} {...book} />
           ))}
-        </div>
-      ) : (
-        <p>Ничего не найдено...</p>
+        </Box>
       )}
     </>
   );

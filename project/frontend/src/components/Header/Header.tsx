@@ -62,15 +62,15 @@ const Header = () => {
               transform: 'scale(1.1)',
             }
           }}>
-            <Box sx={{ display: 'flex', height: '51px' }}>
-              <Typography sx={{color: '#03A9F4', fontSize: '40px'}} >b</Typography>
-              <Typography sx={{color: '#03A9F4', fontSize: '36px'}} >i</Typography>
-              <Typography sx={{ color: '#4CAF50', fontSize: '40px'}}>bl</Typography>
-              <Typography sx={{color: '#03A9F4', fontSize: '36px'}} >i</Typography>
-              <Typography sx={{color: '#f2f209', fontSize: '41px'}}>о.</Typography>
-              <Typography sx={{ color: '#f20808', fontSize: '40px'}}>by</Typography>
+            <Box sx={{ display: 'flex', height: '3.19rem' }}>
+              <Typography sx={{color: '#03A9F4', fontSize: '2.5rem'}} >b</Typography>
+              <Typography sx={{color: '#03A9F4', fontSize: '2.25rem'}} >i</Typography>
+              <Typography sx={{ color: '#4CAF50', fontSize: '2.5rem'}}>bl</Typography>
+              <Typography sx={{color: '#03A9F4', fontSize: '2.25rem'}} >i</Typography>
+              <Typography sx={{color: '#f2f209', fontSize: '2.57rem'}}>о.</Typography>
+              <Typography sx={{ color: '#f20808', fontSize: '2.5rem'}}>by</Typography>
             </Box>
-            <Typography sx={{ color: '#000000', fontSize: '11px', fontStyle: 'italic' }}>
+            <Typography sx={{ color: '#000000', fontSize: '0.68rem', fontStyle: 'italic' }}>
               КНИГИ НА ВСЕ СЛУЧАИ ЖИЗНИ
             </Typography>
           </Link>
@@ -80,7 +80,7 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            <Link href="/basket" sx={{ margin: '0 15px' }}>
+            <Link href="/basket" sx={{ margin: '0 0.94rem' }}>
               <img src="assets/basket.svg" alt="basket" />
             </Link>
             {cookies.user ? (

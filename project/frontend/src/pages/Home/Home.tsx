@@ -22,7 +22,7 @@ export default function Home() {
       setIsLoading(true);
       const response = await fetch(
         // `${API.ALLBOOKS}?p=${page}`,
-        API.ALLBOOKS,
+        `${API.ALLBOOKS}?limit=10`,
         {
           method: 'GET',
           headers: {
@@ -42,14 +42,18 @@ export default function Home() {
   };
 
   return (
-    <Box>
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'column',
+      padding: '4rem 2.5rem',
+    }}>
       {isLoading ? (
         <Loader />
-      ) : books ? (
+      ) : books && (
           <BookList results={books} />
-        ) : (
-        <p>Ничего не найдено...</p>
-      )}
+        )}
     </Box>
   )
 }
