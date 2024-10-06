@@ -21,3 +21,10 @@ export interface Book {
   specialprice: number;
   regularprice: number;
 }
+
+export interface BookResponse {
+  count: number;
+  next?: string | null;
+  previous?: string | null;
+  results: Book[];
+}

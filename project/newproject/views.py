@@ -1,10 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.models import AuthToken
 from .serializers import BookSerializer, UserSerializer
 from .models import Books
-from django.http.response import JsonResponse
 
 @api_view(['POST'])
 def loginApi(request):
@@ -37,14 +37,6 @@ def profileApi(request):
 
   return Response({'error': 'user is not authenticated'}, status=400)
 
-def book_list(request):
-    books = Books.objects.all()
-        
-    if request.method == 'GET': 
-        books_serializer = BookSerializer(books, many=True)
-
-        return Response(books_serializer.data)
-
 @api_view(['POST'])
 def registerApi(request):
   serializer = UserSerializer(data=request.data)
@@ -61,11 +53,6 @@ def registerApi(request):
     'token': token
   })
 
-@api_view(['GET'])
-def book_list(request):
-  if request.method == 'GET':
-    books = Books.objects.all()
-    books_serializer = BookSerializer(books, many=True)
-    return JsonResponse(books_serializer.data, safe=False)
-
-
+class BooksList(generics.ListCreateAPIView):
+  queryset = Books.objects.all()
+  serializer_class = BookSerializer

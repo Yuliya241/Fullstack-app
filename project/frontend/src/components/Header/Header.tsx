@@ -51,26 +51,47 @@ const Header = () => {
             justifyContent: 'space-between',
           })}
         >
-          <Link href="/" sx={{
-            textDecoration: 'none',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            transform: 'scale(1)',
-            transition: 'all 0.2s linear',
-            '&:hover': {
-              transform: 'scale(1.1)',
-            }
-          }}>
+          <Link
+            href="/"
+            sx={{
+              textDecoration: 'none',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              transform: 'scale(1)',
+              transition: 'all 0.2s linear',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
+            }}
+          >
             <Box sx={{ display: 'flex', height: '3.19rem' }}>
-              <Typography sx={{color: '#03A9F4', fontSize: '2.5rem'}} >b</Typography>
-              <Typography sx={{color: '#03A9F4', fontSize: '2.25rem'}} >i</Typography>
-              <Typography sx={{ color: '#4CAF50', fontSize: '2.5rem'}}>bl</Typography>
-              <Typography sx={{color: '#03A9F4', fontSize: '2.25rem'}} >i</Typography>
-              <Typography sx={{color: '#f2f209', fontSize: '2.57rem'}}>о.</Typography>
-              <Typography sx={{ color: '#f20808', fontSize: '2.5rem'}}>by</Typography>
+              <Typography sx={{ color: '#03A9F4', fontSize: '2.5rem' }}>
+                b
+              </Typography>
+              <Typography sx={{ color: '#03A9F4', fontSize: '2.25rem' }}>
+                i
+              </Typography>
+              <Typography sx={{ color: '#4CAF50', fontSize: '2.5rem' }}>
+                bl
+              </Typography>
+              <Typography sx={{ color: '#03A9F4', fontSize: '2.25rem' }}>
+                i
+              </Typography>
+              <Typography sx={{ color: '#f2f209', fontSize: '2.57rem' }}>
+                о.
+              </Typography>
+              <Typography sx={{ color: '#f20808', fontSize: '2.5rem' }}>
+                by
+              </Typography>
             </Box>
-            <Typography sx={{ color: '#000000', fontSize: '0.68rem', fontStyle: 'italic' }}>
+            <Typography
+              sx={{
+                color: '#000000',
+                fontSize: '0.68rem',
+                fontStyle: 'italic',
+              }}
+            >
               КНИГИ НА ВСЕ СЛУЧАИ ЖИЗНИ
             </Typography>
           </Link>

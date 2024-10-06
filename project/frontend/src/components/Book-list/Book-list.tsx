@@ -6,7 +6,13 @@ const BookList = ({ results }: { results: Book[] }) => {
   return (
     <>
       {results.length && (
-        <Box sx={{display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly'}}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-evenly',
+          }}
+        >
           {results.map((book: Book, index) => (
             <BookItem key={index} {...book} />
           ))}
@@ -14,6 +20,6 @@ const BookList = ({ results }: { results: Book[] }) => {
       )}
     </>
   );
-}
+};
 
 export default BookList;

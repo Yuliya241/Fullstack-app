@@ -57,7 +57,9 @@ export default function SignUp() {
         }
       } catch (e) {
         console.error('Ошибка во время регистрации:', e);
-        toast.error('Ошибка во время попытки зарегистрироваться. Попробуйте снова.');
+        toast.error(
+          'Ошибка во время попытки зарегистрироваться. Попробуйте снова.'
+        );
       }
     }
   };
@@ -73,7 +75,7 @@ export default function SignUp() {
         }}
       >
         <Typography component="h1" variant="h5">
-         РЕГИСТРАЦИЯ
+          РЕГИСТРАЦИЯ
         </Typography>
         <Box
           component="form"
