@@ -2,44 +2,50 @@ import { useEffect, useState } from 'react';
 import BookList from '../../components/Book-list/Book-list';
 import { Box, PaginationItem } from '@mui/material';
 import Loader from '../../components/Loader/Loader';
-import { API } from '../../enums/enums';
-import { BookResponse } from '../../interfaces/interfaces';
 import { useCookies } from 'react-cookie';
 import Pagination from '@mui/material/Pagination';
-import { Link as NavLink, useLocation } from 'react-router-dom';
+import {
+  Link as NavLink,
+  useLocation,
+  useSearchParams,
+} from 'react-router-dom';
+import SearchBar from '../../components/Search-bar/Search-bar';
+import { selectSearch } from '../../store/selectors/Selectors';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { getBooks, setSearch } from '../../store/slices/SearchSlice';
+import { useGetAllBooksQuery } from '../../store/api/BooksApi';
 
 export default function Home() {
-  const [books, setBooks] = useState<BookResponse | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setCookie] = useCookies(['main']);
   const location = useLocation();
   const [page, setPage] = useState(
     parseInt(location.search?.split('=')[1]) || 1
   );
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+
+  const dispatch = useAppDispatch();
+  const search = useAppSelector(selectSearch());
+
+  const { data, isFetching } = useGetAllBooksQuery({
+    search: search || '',
+    page: page,
+  });
 
   useEffect(() => {
-    getAllBooks();
-  }, [page]);
-
-  const getAllBooks = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${API.ALLBOOKS}?page=${page}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const res: BookResponse = await response.json();
-      setIsLoading(false);
-      if (response.ok) {
-        setCookie('main', 'books', { secure: true, sameSite: 'lax' });
-        setBooks(res);
-        setPage(page);
-      }
-    } catch (error) {
-      console.error(error);
+    setSearchParams((params) => {
+      params.set('page', String(page));
+      return params;
+    });
+    if (data) {
+      dispatch(getBooks(data.results));
+      setCookie('main', 'books', { secure: true, sameSite: 'lax' });
     }
+  }, [page, setSearchParams, data, dispatch]);
+
+  const clickSearchButton = (): void => {
+    setPage(1);
+    dispatch(setSearch(searchQuery));
   };
 
   return (
@@ -50,16 +56,21 @@ export default function Home() {
         justifyContent: 'center',
         flexDirection: 'column',
         padding: '4rem 2.5rem',
+        rowGap: '1.5rem',
       }}
     >
-      {isLoading ? (
+      <SearchBar onSearch={clickSearchButton} />
+      {isFetching ? (
         <Loader />
       ) : (
-        books && (
+        data?.results && (
           <>
             <Pagination
+              sx={{
+                alignSelf: 'flex-end',
+              }}
               page={page}
-              count={Math.ceil(books.count / 50)}
+              count={Math.ceil(data.count / 50)}
               onChange={(_, num) => setPage(num)}
               showFirstButton
               showLastButton
@@ -72,7 +83,7 @@ export default function Home() {
                 />
               )}
             />
-            <BookList results={books.results} />
+            <BookList results={data.results} />
           </>
         )
       )}

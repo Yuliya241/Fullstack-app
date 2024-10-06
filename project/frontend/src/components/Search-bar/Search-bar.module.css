@@ -1,0 +1,12 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.8rem;
+  width: 100%;
+  max-width: 35rem;
+  margin-bottom: 1.5rem;
+}
+
+.form__wrapper {
+  display: flex;
+}

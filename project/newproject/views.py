@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import generics
+from rest_framework import generics, filters
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.models import AuthToken
 from .serializers import BookSerializer, UserSerializer
@@ -56,3 +56,5 @@ def registerApi(request):
 class BooksList(generics.ListCreateAPIView):
   queryset = Books.objects.all()
   serializer_class = BookSerializer
+  filter_backends = [filters.SearchFilter]
+  search_fields = ['title']

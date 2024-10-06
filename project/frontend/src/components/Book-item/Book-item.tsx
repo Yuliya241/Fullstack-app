@@ -18,7 +18,7 @@ const BookItem = (props: Book) => {
         width: '12.5rem',
         height: '22.5rem',
         cursor: 'pointer',
-        marginTop: 3,
+        marginBottom: 3,
       }}
     >
       <CardContent

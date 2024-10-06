@@ -11,3 +11,7 @@ export type State = {
 };
 
 export type FormType = yup.InferType<typeof schema>;
+
+export type SearchProps = {
+  onSearch: (value: string) => void;
+};

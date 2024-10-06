@@ -28,3 +28,12 @@ export interface BookResponse {
   previous?: string | null;
   results: Book[];
 }
+
+export interface SearchState {
+  books: Book[];
+  search: string | null;
+}
+
+// export interface SelectedState {
+//   selectedBooks: Book[];
+// }
