@@ -58,3 +58,10 @@ class BooksList(generics.ListCreateAPIView):
   serializer_class = BookSerializer
   filter_backends = [filters.SearchFilter]
   search_fields = ['title']
+
+@api_view(['GET'])
+def details_book(request, pk):
+  if request.method == 'GET':
+    book = Books.objects.get(pk=pk)
+    serializer = BookSerializer(book)
+    return Response(serializer.data)

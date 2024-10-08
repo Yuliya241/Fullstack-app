@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API } from '../../enums/enums';
-import { BookResponse } from '../../interfaces/interfaces';
+import { Book, BookResponse } from '../../interfaces/interfaces';
 
 export const booksApi = createApi({
   reducerPath: 'books',
@@ -10,11 +10,10 @@ export const booksApi = createApi({
       query: ({ search, page }) => `?search=${search}&page=${page}`,
     }),
 
-    // getDetailedBook: builder.query<Book, string>({
-    //   query: (id) => `${id}`,
-    // }),
+    getDetailsBook: builder.query<Book, string>({
+      query: (id) => `${id}`,
+    }),
   }),
 });
 
-export const { useGetAllBooksQuery } = booksApi;
-// export const { useGetAllBooksQuery, useGetDetailedBookQuery } = booksApi;
+export const { useGetAllBooksQuery, useGetDetailsBookQuery } = booksApi;

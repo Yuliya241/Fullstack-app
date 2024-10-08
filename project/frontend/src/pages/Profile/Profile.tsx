@@ -1,7 +1,7 @@
 import { Container, Typography, Paper, Box, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Cookies } from 'react-cookie';
-import { AuthResponse } from '../../types/types';
+import { AuthResponse } from '../../interfaces/interfaces';
 
 const Profile = () => {
   const [user, setUser] = useState<AuthResponse | undefined>();

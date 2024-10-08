@@ -14,6 +14,7 @@ export interface AuthResponse {
 }
 
 export interface Book {
+  id: number;
   image: string;
   title: string;
   author: string;
@@ -33,7 +34,3 @@ export interface SearchState {
   books: Book[];
   search: string | null;
 }
-
-// export interface SelectedState {
-//   selectedBooks: Book[];
-// }

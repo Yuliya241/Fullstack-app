@@ -33,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
     return attrs
 
 class BookSerializer(serializers.ModelSerializer):
+  id = serializers.IntegerField(read_only=True)
   class Meta:
     model = Books
-    fields = ['image', 'title', 'author', 'oldprice', 'specialprice', 'regularprice']
+    fields = ['id', 'image', 'title', 'author', 'oldprice', 'specialprice', 'regularprice']

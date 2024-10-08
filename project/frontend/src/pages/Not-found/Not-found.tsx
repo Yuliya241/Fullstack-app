@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styles from './Not-found.module.css';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
     <div className={styles.wrapper}>
       <p className={styles.image}>404</p>
@@ -11,4 +11,6 @@ export default function NotFound() {
       </Link>
     </div>
   );
-}
+ }
+
+export default NotFound;

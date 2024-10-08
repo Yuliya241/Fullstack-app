@@ -11,6 +11,7 @@ import SignUp from '../pages/Sign-up/Sign-up';
 import Basket from '../pages/Basket/Basket';
 import Profile from '../pages/Profile/Profile';
 import PrivateRoute from './PrivateRoute';
+import DetailsBook from '../pages/Details-book/Detailed-book';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="book/:id" element={<DetailsBook />}></Route>
       <Route path="/" element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />} />
       </Route>

@@ -8,12 +8,19 @@ import {
 } from '@mui/material';
 import { Book } from '../../interfaces/interfaces';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useNavigate } from 'react-router-dom';
 
 const BookItem = (props: Book) => {
-  const { image, title, author, oldprice, specialprice, regularprice } = props;
+  const { id, image, title, author, oldprice, specialprice, regularprice } = props;
+  const navigate = useNavigate();
+
+  const openDetailed = () => {
+    navigate(`book/${id}${location.search}`);
+  };
 
   return (
     <Card
+    onClick={openDetailed}
       sx={{
         width: '12.5rem',
         height: '22.5rem',
