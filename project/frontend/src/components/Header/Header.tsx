@@ -9,6 +9,7 @@ import {
 import BaseButton from '../ui/Button';
 import SignOutButton from '../ui/SignOutButton';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import basket from '../../../assets/basket.svg';
 
 const Header = () => {
   const [cookies] = useCookies(['user']);
@@ -102,7 +103,7 @@ const Header = () => {
             }}
           >
             <Link href="/basket" sx={{ margin: '0 0.94rem' }}>
-              <img src="assets/basket.svg" alt="basket" />
+              <img src={basket} alt="basket" />
             </Link>
             {cookies.user ? (
               <>

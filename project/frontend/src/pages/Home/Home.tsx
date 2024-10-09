@@ -64,7 +64,7 @@ export default function Home() {
         <Loader />
       ) : (
         data?.results && (
-            <>
+          <>
             <Pagination
               sx={{
                 alignSelf: 'flex-end',

@@ -11,7 +11,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useNavigate } from 'react-router-dom';
 
 const BookItem = (props: Book) => {
-  const { id, image, title, author, oldprice, specialprice, regularprice } = props;
+  const { id, image, title, author, oldprice, specialprice, regularprice } =
+    props;
   const navigate = useNavigate();
 
   const openDetailed = () => {
@@ -20,7 +21,7 @@ const BookItem = (props: Book) => {
 
   return (
     <Card
-    onClick={openDetailed}
+      onClick={openDetailed}
       sx={{
         width: '12.5rem',
         height: '22.5rem',
@@ -157,7 +158,12 @@ const BookItem = (props: Book) => {
             >
               В корзину
             </Button>
-            <FavoriteBorderIcon color="action" />
+            <FavoriteBorderIcon
+              color="action"
+              sx={{
+                cursor: 'pointer',
+              }}
+            />
           </Stack>
         </Box>
       </CardContent>
