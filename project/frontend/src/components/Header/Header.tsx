@@ -9,7 +9,8 @@ import {
 import BaseButton from '../ui/Button';
 import SignOutButton from '../ui/SignOutButton';
 import { CookiesProvider, useCookies } from 'react-cookie';
-import basket from '../../../assets/basket.svg';
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import PersonIcon from '@mui/icons-material/Person';
 
 const Header = () => {
   const [cookies] = useCookies(['user']);
@@ -103,11 +104,21 @@ const Header = () => {
             }}
           >
             <Link href="/basket" sx={{ margin: '0 0.94rem' }}>
-              <img src={basket} alt="basket" />
+              <LocalGroceryStoreIcon
+                sx={{
+                  color: '#000000',
+                  '&:hover': {
+                    color: 'rgba(0, 0, 0, 0.5)',
+                  },
+                }}
+              />
             </Link>
             {cookies.user ? (
               <>
-                <BaseButton href="/profile">Профиль</BaseButton>
+                <BaseButton href="/profile">
+                  Профиль
+                  <PersonIcon sx={{ marginLeft: '5px' }} />
+                </BaseButton>
                 <SignOutButton />
               </>
             ) : (
