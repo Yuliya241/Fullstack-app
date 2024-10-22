@@ -6,11 +6,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Book } from '../../interfaces/interfaces';
+import { Book, CartResponse } from '../../interfaces/interfaces';
 import { useNavigate } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { API } from '../../enums/enums';
-// import Counter from '../Counter/Counter';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { selectFavoriteBook } from '../../store/selectors/Selectors';
 import {
@@ -21,8 +20,8 @@ import {
 const BookItem = (props: Book) => {
   const { id, image, title, author, oldprice, specialprice, regularprice } =
     props;
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isFavorite = useAppSelector(selectFavoriteBook(id));
 
@@ -41,6 +40,7 @@ const BookItem = (props: Book) => {
           'Content-Type': 'application/json',
         },
       });
+
       if (response.ok) {
         return !isFavorite
           ? dispatch(addToFavorites(book))
@@ -52,41 +52,42 @@ const BookItem = (props: Book) => {
   };
 
   const addToCart = async () => {
-    // try {
-    //   const response = await fetch(API.CART, {
-    //     method: 'POST',
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       book: {
-    //         id: id,
-    //         image: image,
-    //         title: title,
-    //         author: author,
-    //         oldprice: oldprice,
-    //         specialprice: specialprice,
-    //         regularprice: regularprice,
-    //       },
-    //       quantity: counter,
-    //     }),
-    //   });
-    //   const cart: CartResponse = await response.json();
-    //   console.log(cart.data)
-    //   return cart;
-    //   // const token = user.token;
-    //   // if (response.ok) {
-    //   //   // toast.success('Учетная запись успешно создана.');
-    //   //   setCookie('user', token);
-    //   //   // navigate('/');
-    //   // }
-    // } catch (e) {
-    //   console.error(e);
-    //   // toast.error(
-    //   //   'Ошибка во время попытки зарегистрироваться. Попробуйте снова.'
-    //   // );
-    // }
+    const book = {
+      book: {
+        id: id,
+        image: image,
+        title: title,
+        author: author,
+        oldprice: oldprice,
+        specialprice: specialprice,
+        regularprice: regularprice,
+      },
+      quantity: 1,
+    }
+    try {
+      const response = await fetch(API.CART, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(book),
+      });
+      // const cart = await response.json();
+      // console.log(cart)
+      // return cart;
+      // const token = user.token;
+      if (response.ok) {
+        // toast.success('Учетная запись успешно создана.');
+        console.log(response)
+        // navigate('/');
+      }
+    } catch (e) {
+      console.error(e);
+      // toast.error(
+      //   'Ошибка во время попытки зарегистрироваться. Попробуйте снова.'
+      // );
+    }
   };
 
   return (
@@ -241,7 +242,6 @@ const BookItem = (props: Book) => {
               },
             }}
           />
-          {/* <Counter value={counter} /> */}
         </Stack>
       </CardContent>
     </Card>

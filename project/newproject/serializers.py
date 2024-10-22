@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers, validators
 from django.contrib.auth.hashers import make_password
-from .models import Books, FavoriteBooks
+from .models import Books, FavoriteBooks, Cart
 
 class UserSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(
@@ -15,17 +15,17 @@ class UserSerializer(serializers.ModelSerializer):
   confirm_password = serializers.CharField(min_length=8)
 
   class Meta:
-      model = User
-      fields = ('username', 'email', 'password', 'confirm_password')
+    model = User
+    fields = ('username', 'email', 'password', 'confirm_password')
 
   def create(self, validated_data):
-      user = User.objects.create(
-        username = validated_data.get('username'),
-        email = validated_data.get('email'),
-        password = make_password(validated_data.get('password')),
-      )
+    user = User.objects.create(
+      username = validated_data.get('username'),
+      email = validated_data.get('email'),
+      password = make_password(validated_data.get('password')),
+    )
 
-      return user
+    return user
 
   def validate(self, attrs):
     if attrs.get('password') != attrs.get('confirm_password'):
@@ -49,3 +49,9 @@ class FavoriteSerializer(serializers.ModelSerializer):
     self.Meta.depth = 0
     if request and request.method == 'GET':
       self.Meta.depth = 2
+
+class CartSerializer(serializers.ModelSerializer):
+
+  class Meta:
+    model = Cart
+    fields =  '__all__'

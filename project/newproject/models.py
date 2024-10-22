@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from decimal import Decimal
-# from django.conf import settings
 
 class Books(models.Model):
     image = models.TextField()
@@ -16,9 +14,14 @@ class Books(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь')
-    book = models.ForeignKey(to=Books, on_delete=models.CASCADE, verbose_name='Товар')
+    book_id = models.ForeignKey(to=Books, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Книга')
+    image = models.TextField(blank=True, null=True)
+    title = models.TextField(blank=True, null=True)
+    author = models.TextField(blank=True, null=True)
+    oldprice = models.FloatField(blank=True, null=True)
+    specialprice = models.FloatField(blank=True, null=True)
+    regularprice = models.FloatField(blank=True, null=True)
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
-    session_key = models.CharField(max_length=32, null=True, blank=True)
 
     class Meta:
         db_table = 'cart'
@@ -27,9 +30,9 @@ class Cart(models.Model):
 
     def __str__(self):
         if self.user:
-            return f'Корзина {self.user.username} | Товар {self.book.title} | Количество {self.quantity}'
+            return f'Корзина {self.user.username} | Товар {self.title} | Количество {self.quantity}'
             
-        return f'Анонимная корзина | Товар {self.book.title} | Количество {self.quantity}'
+        return f'Анонимная корзина | Товар {self.title} | Количество {self.quantity}'
 
 class FavoriteBooks(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', default=None, null=True)

@@ -61,6 +61,14 @@ export interface CartItem {
   quantity: number;
   specialprice: number;
   regularprice: number;
-  book: Book;
+  book: {
+    id: number;
+    image: string;
+    title: string;
+    author: string;
+    oldprice: number;
+    specialprice: number;
+    regularprice: number;
+  };
   total_price: number;
 }
