@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers, validators
 from django.contrib.auth.hashers import make_password
-from .models import Books
+from .models import Books, FavoriteBooks
 
 class UserSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(
@@ -37,3 +37,15 @@ class BookSerializer(serializers.ModelSerializer):
   class Meta:
     model = Books
     fields = ['id', 'image', 'title', 'author', 'oldprice', 'specialprice', 'regularprice']
+
+class FavoriteSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = FavoriteBooks
+    fields =  '__all__'
+  
+  def __init__(self, *args, **kwargs):
+    super(FavoriteSerializer, self).__init__(*args, **kwargs)
+    request = self.context.get('request')
+    self.Meta.depth = 0
+    if request and request.method == 'GET':
+      self.Meta.depth = 2

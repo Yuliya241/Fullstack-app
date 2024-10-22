@@ -3,12 +3,12 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const Contacts = () => {
   return (
-    <Stack>
+    <Stack sx={{ maxWidth: '18.25rem' }}>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          width: '16.875rem',
+          width: '100%',
           borderRight: '1px solid #23b4ca',
           borderBottom: '2px solid #23b4ca',
         }}
@@ -118,10 +118,18 @@ const Contacts = () => {
           </Link>
         </Typography>
       </Box>
-      <Typography sx={{ color: '#555', fontSize: '0.98rem' }}>
+      <Typography
+        sx={{ color: '#555', fontSize: '0.98rem', textAlign: 'justify' }}
+      >
         Адрес:&nbsp;
-        <span style={{ fontSize: '0.9rem' }}>Интренет магазин. Для</span>
-        <p style={{ textIndent: '3.5em', textAlign: 'justify' }}>
+        <Typography component="span" style={{ textAlign: 'justify' }}>
+          Интернет магазин. Для
+          <br />
+        </Typography>
+        <Typography
+          component="span"
+          style={{ textIndent: '3em', textAlign: 'justify', display: 'block' }}
+        >
           передачи заказа в выбранный
           <br />
           вами пункт самовывоза необходимо
@@ -129,7 +137,7 @@ const Contacts = () => {
           предварительно оформить заказ на
           <br />
           сайте или по телефону.
-        </p>
+        </Typography>
       </Typography>
     </Stack>
   );

@@ -11,12 +11,13 @@ import GroupIcon from '@mui/icons-material/Group';
 
 const AccountBlock = () => {
   return (
-    <Stack>
+    <Stack sx={{ maxWidth: '18.25rem' }}>
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          width: '16.875rem',
+          width: '100%',
+          minWidth: '15.06rem',
           borderRight: '1px solid #40af64',
           borderBottom: '2px solid #40af64',
         }}
@@ -56,14 +57,6 @@ const AccountBlock = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component="a" href="#">
-            <ListItemText
-              primary="Мои заказы"
-              sx={{ color: '#555', fontSize: '0.875rem' }}
-            />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
           <ListItemButton component="a" href="/basket">
             <ListItemText
               primary="Корзина"
@@ -72,7 +65,7 @@ const AccountBlock = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component="a" href="#">
+          <ListItemButton component="a" href="/favorites">
             <ListItemText
               primary="Избранное"
               sx={{ color: '#555', fontSize: '0.875rem' }}

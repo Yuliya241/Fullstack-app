@@ -9,6 +9,8 @@ const Footer = () => {
       <Stack
         direction="row"
         sx={{
+          flexWrap: 'wrap',
+          rowGap: '1rem',
           backgroundColor: '#f1f1f1',
           alignItems: 'flex-start',
           justifyContent: 'space-between',

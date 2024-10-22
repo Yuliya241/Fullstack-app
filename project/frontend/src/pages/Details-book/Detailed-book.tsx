@@ -1,14 +1,49 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetDetailsBookQuery } from '../../store/api/BooksApi';
 import Loader from '../../components/Loader/Loader';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { API } from '../../enums/enums';
+import { Book, FavoriteResponse } from '../../interfaces/interfaces';
+import {
+  addToFavorites,
+  getFavorites,
+  removeFromFavorites,
+} from '../../store/slices/FavoriteSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
+import { selectFavoriteBook } from '../../store/selectors/Selectors';
 
 const DetailsBook = () => {
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const isFavorite = useAppSelector(selectFavoriteBook(Number(id)));
+
+  useEffect(() => {
+    fetchFavoriteList();
+  }, [dispatch]);
+
+  const fetchFavoriteList = async () => {
+    try {
+      const response = await fetch(API.FAVORITE_LIST, {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const favorites: FavoriteResponse = await response.json();
+
+      if (response.ok) {
+        dispatch(getFavorites(favorites.results));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const { data, isFetching } = useGetDetailsBookQuery(id || '');
 
@@ -17,20 +52,44 @@ const DetailsBook = () => {
     navigate(-1);
   };
 
+  const changeFavoriteStatus = async (book: Book) => {
+    try {
+      const response = await fetch(`${API.ALLBOOKS}${id}/favorite`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        return !isFavorite
+          ? dispatch(addToFavorites(book))
+          : dispatch(removeFromFavorites(book));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100dvh',
+        justifyContent: 'center',
+        margin: '0 auto',
+        padding: '4rem',
+      }}
+    >
       {isFetching && !isOpen ? (
         <Loader />
       ) : (
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100dvh',
-            justifyContent: 'center',
             maxWidth: '50rem',
             margin: '0 auto',
-            padding: '0 4rem',
           }}
         >
           <Paper
@@ -173,11 +232,15 @@ const DetailsBook = () => {
                     borderRadius: '4px',
                   }}
                 >
-                  <FavoriteBorderIcon
-                    color="action"
+                  <FavoriteIcon
+                    onClick={() => changeFavoriteStatus(data as Book)}
+                    color={isFavorite ? 'error' : 'action'}
                     sx={{
                       cursor: 'pointer',
                       marginRight: '5px',
+                      '&:hover': {
+                        color: 'rgb(211,47,47, 0.7)',
+                      },
                     }}
                   />
                   Добавить в пожелания
@@ -187,7 +250,7 @@ const DetailsBook = () => {
           </Paper>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 

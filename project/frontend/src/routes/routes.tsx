@@ -12,6 +12,7 @@ import Basket from '../pages/Basket/Basket';
 import Profile from '../pages/Profile/Profile';
 import PrivateRoute from './PrivateRoute';
 import DetailsBook from '../pages/Details-book/Detailed-book';
+import Favorites from '../pages/Favorites/Favorites';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,12 +20,15 @@ const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="book/:id" element={<DetailsBook />}></Route>
+      <Route path="book/:id" element={<DetailsBook />} />
       <Route path="/" element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />} />
       </Route>
       <Route path="/" element={<PrivateRoute />}>
         <Route path="/basket" element={<Basket />} />
+      </Route>
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="/favorites" element={<Favorites />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

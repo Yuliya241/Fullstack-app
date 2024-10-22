@@ -34,3 +34,33 @@ export interface SearchState {
   books: Book[];
   search: string | null;
 }
+
+export interface FavoriteState {
+  favoriteBooks: FavoriteBook[];
+}
+
+export interface FavoriteResponse {
+  count: number;
+  next?: string | null;
+  previous?: string | null;
+  results: FavoriteBook[];
+}
+
+export interface FavoriteBook {
+  id?: number;
+  user?: number | null;
+  book: Book;
+}
+
+export interface CartResponse {
+  data: CartItem[];
+  cart_total_price: number;
+}
+
+export interface CartItem {
+  quantity: number;
+  specialprice: number;
+  regularprice: number;
+  book: Book;
+  total_price: number;
+}
