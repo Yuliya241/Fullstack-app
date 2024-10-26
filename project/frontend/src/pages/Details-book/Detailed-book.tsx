@@ -1,18 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetDetailsBookQuery } from '../../store/api/BooksApi';
 import Loader from '../../components/Loader/Loader';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { API } from '../../enums/enums';
-import { Book, FavoriteResponse } from '../../interfaces/interfaces';
+import { Book } from '../../interfaces/interfaces';
 import {
   addToFavorites,
-  getFavorites,
   removeFromFavorites,
 } from '../../store/slices/FavoriteSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { selectFavoriteBook } from '../../store/selectors/Selectors';
+import { selectCartItem, selectFavoriteBook } from '../../store/selectors/Selectors';
+import { Cookies } from 'react-cookie';
+import { addBookToCart, removeBookFromCart } from '../../store/slices/CartSlice';
 
 const DetailsBook = () => {
   const { id } = useParams();
@@ -20,32 +21,24 @@ const DetailsBook = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isFavorite = useAppSelector(selectFavoriteBook(Number(id)));
-
-  useEffect(() => {
-    fetchFavoriteList();
-  }, [dispatch]);
-
-  const fetchFavoriteList = async () => {
-    try {
-      const response = await fetch(API.FAVORITE_LIST, {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const favorites: FavoriteResponse = await response.json();
-
-      if (response.ok) {
-        dispatch(getFavorites(favorites.results));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const isInCart = useAppSelector(selectCartItem(Number(id)));
+  const cookies = new Cookies();
+  const userId = cookies.get('userId');
+  const token = cookies.get('userToken');
 
   const { data, isFetching } = useGetDetailsBookQuery(id || '');
+
+  const book = {
+    book_id: Number(id),
+    image: data?.image || '',
+    title: data?.title || '',
+    author: data?.author || '',
+    oldprice: data?.oldprice || 0,
+    specialprice: data?.specialprice || 0,
+    regularprice: data?.regularprice || 0,
+    quantity: 1,
+    user: userId
+}
 
   const closeDetailed = () => {
     setIsOpen(false);
@@ -66,6 +59,45 @@ const DetailsBook = () => {
         return !isFavorite
           ? dispatch(addToFavorites(book))
           : dispatch(removeFromFavorites(book));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const addToCart = async () => {
+    try {
+      const response = await fetch(API.CART_ADD, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
+        body: JSON.stringify(book),
+      });
+
+      if (response.ok) {
+        dispatch(addBookToCart(book))
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const deleteFromCart = async () => {
+    try {
+      const response = await fetch(`${API.CART_DELETE}${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        dispatch(removeBookFromCart(book))
       }
     } catch (e) {
       console.error(e);
@@ -200,8 +232,10 @@ const DetailsBook = () => {
                     </Typography>
                   )}
                 </Box>
-                <Button
-                  variant="contained"
+                  {!isInCart ? (
+                  <Button
+                      variant="contained"
+                      onClick={addToCart}
                   sx={{
                     color: '#555',
                     fontWeight: 'bold',
@@ -221,7 +255,32 @@ const DetailsBook = () => {
                   }}
                 >
                   Добавить в корзину
-                </Button>
+                  </Button>
+                  ) : (
+                    <Button
+                        variant="contained"
+                        onClick={deleteFromCart}
+                    sx={{
+                      color: '#555',
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      borderRadius: '4px',
+                      backgroundColor: '#e7e7e7',
+                      transition: 'all 0.4s ease',
+                      '.MuiButtonBase-root': {
+                        color: '#555',
+                      },
+                      '&.MuiButton-outlinedPrimary': {
+                        border: 'none',
+                      },
+                      '&:hover': {
+                        backgroundColor: '#FFC000',
+                      },
+                    }}
+                  >
+                    Удалить из корзины
+                  </Button>
+                  )}
                 <Button
                   variant="contained"
                   sx={{

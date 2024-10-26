@@ -119,7 +119,7 @@ class CartAddBookView(APIView):
     filter_user = Cart.objects.filter(user=data["user"])
 
     try:
-      cart_book = filter_user.get(book_id=data["book_id"]["id"])
+      cart_book = filter_user.get(book_id=data["book_id"])
       cart_book.quantity += 1
       cart_book.save()
 
@@ -127,7 +127,7 @@ class CartAddBookView(APIView):
       return Response(serializer.data, status=status.HTTP_200_OK)
     except:
       add_in_cart = {
-        "book_id": data["book_id"]["id"],
+        "book_id": data["book_id"],
         "image": data["image"],
         "title": data["title"],
         "author": data["author"],

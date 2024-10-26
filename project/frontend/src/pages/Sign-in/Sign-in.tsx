@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FormType } from '../../types/types';
 // import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
-import { useCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
 import { API } from '../../enums/enums';
 
@@ -20,7 +20,8 @@ const SignIn = () => {
   });
 
   const navigate = useNavigate();
-  const [, setCookie] = useCookies(['user']);
+  const cookies = new Cookies();
+  // const [, setCookie] = useCookies(['user']);
 
   const handleSignIn = async (data: AuthFormData) => {
     const { username, password } = data;
@@ -40,10 +41,11 @@ const SignIn = () => {
         });
 
         const user: AuthResponse = await response.json();
-        const token = user.token;
+
         if (response.ok) {
           toast.success('Вы успешно вошли в учетную запись.');
-          setCookie('user', token);
+          cookies.set('userToken', user.token);
+          cookies.set('userId', user.user.id);
           navigate('/');
         } else {
           toast.error('Ошибка входа. Попробуйте снова.');

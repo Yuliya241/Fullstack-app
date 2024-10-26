@@ -147,3 +147,4 @@ CART_SESSION_ID = 'cart'
 LOGIN_URL = 'api/login/'
 
 CORS_ALLOW_CREDENTIALS = True
+

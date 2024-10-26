@@ -9,6 +9,7 @@ export interface AuthResponse {
   user: {
     username: string;
     email: string;
+    id: number;
   };
   token: string;
 }
@@ -52,23 +53,21 @@ export interface FavoriteBook {
   book: Book;
 }
 
-export interface CartResponse {
-  data: CartItem[];
-  cart_total_price: number;
-}
-
 export interface CartItem {
-  quantity: number;
+  id?: number;
+  image: string;
+  title: string;
+  author: string;
+  oldprice: number;
   specialprice: number;
   regularprice: number;
-  book: {
-    id: number;
-    image: string;
-    title: string;
-    author: string;
-    oldprice: number;
-    specialprice: number;
-    regularprice: number;
-  };
-  total_price: number;
+  quantity: number;
+  user: number | undefined;
+  book_id: number;
+}
+export interface CartState {
+  cartItems: CartItem[];
+  total: number;
+  quantity: number;
+  selectBook?: CartItem;
 }

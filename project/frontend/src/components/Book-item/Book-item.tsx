@@ -6,24 +6,31 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Book, CartResponse } from '../../interfaces/interfaces';
+import { Book } from '../../interfaces/interfaces';
 import { useNavigate } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { API } from '../../enums/enums';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { selectFavoriteBook } from '../../store/selectors/Selectors';
+import { selectCartItem, selectFavoriteBook } from '../../store/selectors/Selectors';
 import {
   addToFavorites,
   removeFromFavorites,
 } from '../../store/slices/FavoriteSlice';
+import { Cookies } from 'react-cookie';
+import { addBookToCart, removeBookFromCart } from '../../store/slices/CartSlice';
+// import { usePostBooksToCartQuery } from '../../store/api/BooksApi';
+// import { useChangeFavoriteStatusQuery } from '../../store/api/BooksApi';
 
 const BookItem = (props: Book) => {
   const { id, image, title, author, oldprice, specialprice, regularprice } =
     props;
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isFavorite = useAppSelector(selectFavoriteBook(id));
+  const isInCart = useAppSelector(selectCartItem(id));
+  const cookies = new Cookies();
+  const userId = cookies.get('userId');
+  const token = cookies.get('userToken');
 
   const openDetailed = () => {
     navigate(
@@ -31,9 +38,23 @@ const BookItem = (props: Book) => {
     );
   };
 
+  // const { data } = useChangeFavoriteStatusQuery(id || '');
+
+  const book = {
+    book_id: id,
+    image: image,
+    title: title,
+    author: author,
+    oldprice: oldprice,
+    specialprice: specialprice,
+    regularprice: regularprice,
+    quantity: 1,
+    user: userId
+}
+
   const changeFavoriteStatus = async (book: Book) => {
     try {
-      const response = await fetch(`${API.ALLBOOKS}${id}/favorite`, {
+      const response = await fetch(`${API.ALLBOOKS}api/books/${id}/favorite`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -52,41 +73,41 @@ const BookItem = (props: Book) => {
   };
 
   const addToCart = async () => {
-    const book = {
-      book: {
-        id: id,
-        image: image,
-        title: title,
-        author: author,
-        oldprice: oldprice,
-        specialprice: specialprice,
-        regularprice: regularprice,
-      },
-      quantity: 1,
-    }
     try {
-      const response = await fetch(API.CART, {
+      const response = await fetch(API.CART_ADD, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
         },
         body: JSON.stringify(book),
       });
-      // const cart = await response.json();
-      // console.log(cart)
-      // return cart;
-      // const token = user.token;
+
       if (response.ok) {
-        // toast.success('Учетная запись успешно создана.');
-        console.log(response)
-        // navigate('/');
+        dispatch(addBookToCart(book))
       }
     } catch (e) {
       console.error(e);
-      // toast.error(
-      //   'Ошибка во время попытки зарегистрироваться. Попробуйте снова.'
-      // );
+    }
+  };
+
+  const deleteFromCart = async () => {
+    try {
+      const response = await fetch(`${API.CART_DELETE}${id}/`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        dispatch(removeBookFromCart(book))
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -210,12 +231,36 @@ const BookItem = (props: Book) => {
           direction="row"
           sx={{ justifyContent: 'center', alignItems: 'center' }}
         >
+          {!isInCart ? (
           <Button
-            onClick={addToCart}
-            variant="outlined"
-            sx={{
+          onClick={addToCart}
+          variant="outlined"
+          sx={{
+            color: '#23b4ca',
+            marginRight: '3px',
+            transition: 'all 0.4s ease',
+            '.MuiButtonBase-root': {
               color: '#23b4ca',
+            },
+            '&.MuiButton-outlinedPrimary': {
+              border: '1px solid #23b4ca',
+            },
+            '&:hover': {
+              color: '#ffffff',
+              backgroundColor: '#23b4ca',
+            },
+          }}
+        >
+          В корзину
+        </Button>
+          ) : (
+            <Button
+            onClick={deleteFromCart}
+            variant="contained"
+            sx={{
+              color: 'ffffff',
               marginRight: '3px',
+              backgroundColor: '#23b4ca',
               transition: 'all 0.4s ease',
               '.MuiButtonBase-root': {
                 color: '#23b4ca',
@@ -224,13 +269,15 @@ const BookItem = (props: Book) => {
                 border: '1px solid #23b4ca',
               },
               '&:hover': {
-                color: '#ffffff',
-                backgroundColor: '#23b4ca',
+                color: '#23b4ca',
+                backgroundColor: 'transparent',
+                border: '1px solid #23b4ca',
               },
             }}
           >
-            В корзину
+            В корзине
           </Button>
+          )}
           <FavoriteIcon
             onClick={() => changeFavoriteStatus(props)}
             color={isFavorite ? 'error' : 'action'}

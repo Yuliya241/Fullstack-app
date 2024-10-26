@@ -14,7 +14,7 @@ class Books(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Пользователь')
-    book_id = models.ForeignKey(to=Books, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Книга')
+    book_id = models.IntegerField(blank=True, null=True)
     image = models.TextField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)
     author = models.TextField(blank=True, null=True)

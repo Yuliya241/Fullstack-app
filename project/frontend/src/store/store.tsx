@@ -3,12 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { booksApi } from './api/BooksApi';
 import { searchSlice } from './slices/SearchSlice';
 import { favoriteSlice } from './slices/FavoriteSlice';
+import { cartSlice } from './slices/CartSlice';
 
 export const store = configureStore({
   reducer: {
     [booksApi.reducerPath]: booksApi.reducer,
     search: searchSlice.reducer,
     favorite: favoriteSlice.reducer,
+    cart: cartSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

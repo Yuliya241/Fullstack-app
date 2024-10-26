@@ -11,14 +11,15 @@ const Profile = () => {
   useEffect(() => {
     const getProfile = async () => {
       const cookies = new Cookies();
-      const cookieValue = cookies.get('user');
+      const token = cookies.get('userToken');
+
       try {
         const response = await fetch('http://127.0.0.1:8000/api/profile/', {
           method: 'GET',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `Token ${cookieValue}`,
+            Authorization: `Token ${token}`,
           },
         });
 

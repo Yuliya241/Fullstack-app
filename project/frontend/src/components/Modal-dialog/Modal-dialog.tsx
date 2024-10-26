@@ -17,7 +17,7 @@ export default function BasicModal({
 }) {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  const cookieValue = cookies.get('user');
+  const token = cookies.get('userToken');
 
   const handleSignOut = async () => {
     try {
@@ -26,13 +26,15 @@ export default function BasicModal({
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Token ${cookieValue}`,
+          Authorization: `Token ${token}`,
         },
       });
 
       if (response.ok) {
         toast.success('Вы успешно вышли из учетной записи.');
-        cookies.remove('user', { path: '/' });
+        cookies.remove('userToken', { path: '/' });
+        cookies.remove('userId', { path: '/' });
+        // window.location.reload()
         navigate('/');
       } else {
         toast.error('Ошибка выхода. Попробуйте снова.');
