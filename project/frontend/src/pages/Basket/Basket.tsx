@@ -1,4 +1,4 @@
-import { API } from '../../enums/enums';
+import { API, COOKIES } from '../../enums/enums';
 import { CartItem } from '../../interfaces/interfaces';
 import { Cookies } from 'react-cookie';
 import { styled } from '@mui/material/styles';
@@ -14,8 +14,8 @@ import { selectCart, selectTotalPrice } from '../../store/selectors/Selectors';
 
 const Basket = () => {
   const cookies = new Cookies();
-  const userId = cookies.get('userId');
-  const token = cookies.get('userToken');
+  const userId = cookies.get(COOKIES.ID);
+  const token = cookies.get(COOKIES.TOKEN);
 
   const dispatch = useAppDispatch();
   const { data, isFetching } = useGetUserCartQuery(userId || '');
@@ -70,7 +70,7 @@ const Basket = () => {
 
   const deleteFromCart = async (id: number) => {
     try {
-      const response = await fetch(`${API.CART_DELETE}${id}/`, {
+      await fetch(`${API.CART_DELETE}${id}/`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -78,9 +78,6 @@ const Basket = () => {
           Authorization: `Token ${token}`,
         },
       });
-      // if (response.ok) {
-      //   dispatch(setTotalSum(cartItems));
-      // }
 
     } catch (e) {
       console.error(e);

@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { API } from '../../enums/enums';
-import { Book, BookResponse, CartItem, FavoriteResponse } from '../../interfaces/interfaces';
+import { API, COOKIES } from '../../enums/enums';
+import { AuthResponse, Book, BookResponse, CartItem, FavoriteResponse } from '../../interfaces/interfaces';
 import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
-const token = cookies.get('userToken');
+const token = cookies.get(COOKIES.TOKEN);
 
 export const booksApi = createApi({
   reducerPath: 'books',
@@ -22,33 +22,25 @@ export const booksApi = createApi({
       query: () => `api/books/favorites`,
     }),
 
-    // changeFavoriteStatus: builder.query({
-    //   query: (id) => ({
-    //     url: `api/books/${id}/favorite`,
-    //     method: 'POST',
-    // }),
-    // }),
-
     getUserCart: builder.query<CartItem[], number>({
       query: (id) => ({
         url: `cart/${id}/`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+    }),
+    }),
+
+    getProfile: builder.query<AuthResponse, void>({
+      query: () => ({
+        url: `api/profile/`,
         method: 'GET',
         headers: {
           Authorization: `Token ${token}`,
         },
     }),
     }),
-
-    // postBooksToCart: builder.query<CartItem, CartItem>({
-    //   query: (book) => ({
-    //     url: `cart/add/`,
-    //     method: 'POST',
-    //     headers: {
-    //       Authorization: `Token ${token}`,
-    //     },
-    //     body: JSON.stringify(book)
-    // }),
-    // }),
   }),
 });
 
@@ -57,6 +49,5 @@ export const {
   useGetDetailsBookQuery,
   useGetUserCartQuery,
   useGetFavoriteBooksQuery,
-  // usePostBooksToCartQuery
-  // useChangeFavoriteStatusQuery
+  useGetProfileQuery
 } = booksApi;

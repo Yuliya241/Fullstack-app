@@ -6,8 +6,6 @@ from knox.models import AuthToken
 from .serializers import BookSerializer, FavoriteSerializer, UserSerializer, CartSerializer
 from .models import Books, FavoriteBooks, Cart
 from rest_framework.views import APIView
-# from django.contrib.auth.decorators import login_required
-# from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 @api_view(['POST'])
 def loginApi(request):
@@ -79,10 +77,7 @@ def details_book(request, pk):
     serializer = BookSerializer(book)
     return Response(serializer.data)
 
-
 @api_view(['POST'])
-# @login_required
-# @permission_classes([IsAuthenticated])
 def add_to_favorite(request, pk):
   favorite_book, created = FavoriteBooks.objects.get_or_create(
     user=request.user.id, book_id=pk
@@ -102,7 +97,6 @@ def add_to_favorite(request, pk):
 class FavoriteList(generics.ListCreateAPIView):
   queryset = FavoriteBooks.objects.all()
   serializer_class = FavoriteSerializer
-  # permission_classes = [permissions.IsAuthenticated]
 
 class CartListView(APIView):
 

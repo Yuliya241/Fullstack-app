@@ -4,7 +4,7 @@ import { useGetDetailsBookQuery } from '../../store/api/BooksApi';
 import Loader from '../../components/Loader/Loader';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { API } from '../../enums/enums';
+import { API, COOKIES } from '../../enums/enums';
 import { Book } from '../../interfaces/interfaces';
 import {
   addToFavorites,
@@ -13,6 +13,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { selectCartItem, selectFavoriteBook } from '../../store/selectors/Selectors';
 import { Cookies } from 'react-cookie';
+import toast from 'react-hot-toast';
 import { addBookToCart, removeBookFromCart } from '../../store/slices/CartSlice';
 
 const DetailsBook = () => {
@@ -23,8 +24,8 @@ const DetailsBook = () => {
   const isFavorite = useAppSelector(selectFavoriteBook(Number(id)));
   const isInCart = useAppSelector(selectCartItem(Number(id)));
   const cookies = new Cookies();
-  const userId = cookies.get('userId');
-  const token = cookies.get('userToken');
+  const userId = cookies.get(COOKIES.ID);
+  const token = cookies.get(COOKIES.TOKEN);
 
   const { data, isFetching } = useGetDetailsBookQuery(id || '');
 
@@ -42,46 +43,56 @@ const DetailsBook = () => {
 
   const closeDetailed = () => {
     setIsOpen(false);
-    navigate(-1);
+    navigate('/');
   };
 
   const changeFavoriteStatus = async (book: Book) => {
-    try {
-      const response = await fetch(`${API.ALLBOOKS}${id}/favorite`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        return !isFavorite
-          ? dispatch(addToFavorites(book))
-          : dispatch(removeFromFavorites(book));
+    if (userId) {
+      try {
+        const response = await fetch(`${API.ALLBOOKS}api/books/${id}/favorite`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (response.ok) {
+          return !isFavorite
+            ? dispatch(addToFavorites(book))
+            : dispatch(removeFromFavorites(book));
+        }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
+    } else {
+      toast.error('Для добавления в избранное, пожалуйста, войдите в учетную запись');
+      navigate('/signin');
     }
   };
 
   const addToCart = async () => {
-    try {
-      const response = await fetch(API.CART_ADD, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
-        },
-        body: JSON.stringify(book),
-      });
-
-      if (response.ok) {
-        dispatch(addBookToCart(book))
+    if (userId) {
+      try {
+        const response = await fetch(API.CART_ADD, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(book),
+        });
+  
+        if (response.ok) {
+          dispatch(addBookToCart(book))
+        }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
+    } else {
+      toast.error('Для добавления в корзину, пожалуйста, войдите в учетную запись');
+      navigate('/signin');
     }
   };
 
@@ -92,7 +103,7 @@ const DetailsBook = () => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -281,7 +292,8 @@ const DetailsBook = () => {
                     Удалить из корзины
                   </Button>
                   )}
-                <Button
+                  <Button
+                    onClick={() => changeFavoriteStatus(data as Book)}
                   variant="contained"
                   sx={{
                     color: '#555',
@@ -292,7 +304,6 @@ const DetailsBook = () => {
                   }}
                 >
                   <FavoriteIcon
-                    onClick={() => changeFavoriteStatus(data as Book)}
                     color={isFavorite ? 'error' : 'action'}
                     sx={{
                       cursor: 'pointer',

@@ -7,7 +7,7 @@ import { FormType } from '../../types/types';
 import toast from 'react-hot-toast';
 import { Cookies } from 'react-cookie';
 import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
-import { API } from '../../enums/enums';
+import { API, COOKIES } from '../../enums/enums';
 
 const SignIn = () => {
   const {
@@ -21,7 +21,6 @@ const SignIn = () => {
 
   const navigate = useNavigate();
   const cookies = new Cookies();
-  // const [, setCookie] = useCookies(['user']);
 
   const handleSignIn = async (data: AuthFormData) => {
     const { username, password } = data;
@@ -44,8 +43,8 @@ const SignIn = () => {
 
         if (response.ok) {
           toast.success('Вы успешно вошли в учетную запись.');
-          cookies.set('userToken', user.token);
-          cookies.set('userId', user.user.id);
+          cookies.set(COOKIES.TOKEN, user.token);
+          cookies.set(COOKIES.ID, user.user.id);
           navigate('/');
         } else {
           toast.error('Ошибка входа. Попробуйте снова.');

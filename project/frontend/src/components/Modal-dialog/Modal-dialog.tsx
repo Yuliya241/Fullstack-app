@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
-import { API } from '../../enums/enums';
+import { API, COOKIES } from '../../enums/enums';
 
 export default function BasicModal({
   open,
@@ -17,7 +17,7 @@ export default function BasicModal({
 }) {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  const token = cookies.get('userToken');
+  const token = cookies.get(COOKIES.TOKEN);
 
   const handleSignOut = async () => {
     try {
@@ -32,9 +32,8 @@ export default function BasicModal({
 
       if (response.ok) {
         toast.success('Вы успешно вышли из учетной записи.');
-        cookies.remove('userToken', { path: '/' });
-        cookies.remove('userId', { path: '/' });
-        // window.location.reload()
+        cookies.remove(COOKIES.TOKEN, { path: '/' });
+        cookies.remove(COOKIES.ID, { path: '/' });
         navigate('/');
       } else {
         toast.error('Ошибка выхода. Попробуйте снова.');

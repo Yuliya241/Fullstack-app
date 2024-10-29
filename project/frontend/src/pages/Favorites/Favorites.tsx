@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-// import { FavoriteBook, FavoriteResponse } from '../../interfaces/interfaces';
 import FavoriteList from '../../components/Favorite-list/Favorite-list';
-// import { API } from '../../enums/enums';
 import Loader from '../../components/Loader/Loader';
 import { Box, Typography } from '@mui/material';
 import { getFavorites } from '../../store/slices/FavoriteSlice';
@@ -10,8 +8,6 @@ import { useGetFavoriteBooksQuery } from '../../store/api/BooksApi';
 import { selectFavorites } from '../../store/selectors/Selectors';
 
 const Favorites = () => {
-  // const [favoriteBooks, setFavoriteBooks] = useState<FavoriteBook[]>();
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const favoriteBooks = useAppSelector(selectFavorites());
 
@@ -22,33 +18,6 @@ const Favorites = () => {
       dispatch(getFavorites(data.results));
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   fetchFavoriteList();
-  // }, []);
-
-  // const fetchFavoriteList = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const response = await fetch(API.FAVORITE_LIST, {
-  //       method: 'GET',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-
-  //     const favorites: FavoriteResponse = await response.json();
-
-  //     if (response.ok) {
-  //       setIsLoading(false);
-  //       setFavoriteBooks(favorites.results);
-  //       dispatch(getFavorites(favorites.results));
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
 
   return (
     <Box

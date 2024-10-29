@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import BookList from '../../components/Book-list/Book-list';
 import { Box, PaginationItem } from '@mui/material';
 import Loader from '../../components/Loader/Loader';
-import { useCookies } from 'react-cookie';
 import Pagination from '@mui/material/Pagination';
 import {
   Link as NavLink,
@@ -15,10 +14,9 @@ import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getBooks, setSearch } from '../../store/slices/SearchSlice';
 import { getFavorites } from '../../store/slices/FavoriteSlice';
 import { useGetAllBooksQuery, useGetFavoriteBooksQuery, useGetUserCartQuery } from '../../store/api/BooksApi';
-// import { FavoriteResponse } from '../../interfaces/interfaces';
-// import { API } from '../../enums/enums';
-import { Cookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { getCartItems } from '../../store/slices/CartSlice';
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 export default function Home() {
   const [, setCookie] = useCookies(['main']);
@@ -40,41 +38,25 @@ export default function Home() {
     page: page,
   });
 
-  const { data: cartItems } = useGetUserCartQuery(userId || '');
-  const { data: favoriteItems } = useGetFavoriteBooksQuery();
+  const { data: cartItems } = useGetUserCartQuery(userId ?? skipToken);
+  const { data: favoriteItems } = useGetFavoriteBooksQuery(userId ?? skipToken);
 
   useEffect(() => {
+    setCookie('main', 'books', { secure: true, sameSite: 'lax' });
     setSearchParams((params) => {
       params.set('page', String(page));
       return params;
     });
-    if (data && cartItems && favoriteItems) {
+    if (data && favoriteItems && cartItems) {
       dispatch(getBooks(data.results));
       dispatch(getCartItems(cartItems));
       dispatch(getFavorites(favoriteItems.results));
-      setCookie('main', 'books', { secure: true, sameSite: 'lax' });
     }
-  }, [page, setSearchParams, data, dispatch, userId, token, cartItems]);
-
-  // const fetchFavoriteList = async () => {
-  //   try {
-  //     const response = await fetch(API.FAVORITE_LIST, {
-  //       method: 'GET',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //     });
-
-  //     const favorites: FavoriteResponse = await response.json();
-
-  //     if (response.ok) {
-  //       dispatch(getFavorites(favorites.results));
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
+    if (!userId) {
+      dispatch(getCartItems([]));
+      dispatch(getFavorites([]));
+    }
+  }, [page, setSearchParams, data, dispatch, userId, token, cartItems, favoriteItems]);
 
   const clickSearchButton = (): void => {
     setPage(1);
@@ -82,7 +64,7 @@ export default function Home() {
   };
 
   return (
-    <Box
+      <Box
       sx={{
         display: 'flex',
         alignItems: 'center',

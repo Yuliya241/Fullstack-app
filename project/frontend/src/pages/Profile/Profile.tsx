@@ -1,43 +1,22 @@
 import { Container, Typography, Paper, Box, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Cookies } from 'react-cookie';
 import { AuthResponse } from '../../interfaces/interfaces';
+import { useGetProfileQuery } from '../../store/api/BooksApi';
 
 const Profile = () => {
   const [user, setUser] = useState<AuthResponse | undefined>();
   const [userName, setUserName] = useState(user?.user.username || '');
   const [email, setEmail] = useState(user?.user.email || '');
 
+  const { data } = useGetProfileQuery();
+
   useEffect(() => {
-    const getProfile = async () => {
-      const cookies = new Cookies();
-      const token = cookies.get('userToken');
-
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/profile/', {
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Token ${token}`,
-          },
-        });
-
-        const user: AuthResponse = await response.json();
-        if (response.ok) {
-          setUser(user);
-          setUserName(user?.user.username);
-          setEmail(user?.user.email);
-          return user;
-        } else {
-          return null;
-        }
-      } catch (e) {
-        console.error('Error during getting user:', e);
-      }
-    };
-    getProfile();
-  }, []);
+    if (data) {
+      setUser(data);
+      setUserName(data?.user.username);
+      setEmail(data?.user.email);
+    }
+  }, [data]);
 
   return (
     <Container maxWidth="xs">

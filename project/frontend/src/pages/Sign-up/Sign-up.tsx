@@ -5,8 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FormType } from '../../types/types';
 // import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
-import { useCookies } from 'react-cookie';
-import { API } from '../../enums/enums';
+import { Cookies } from 'react-cookie';
+import { API, COOKIES } from '../../enums/enums';
 import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
 
 export default function SignUp() {
@@ -20,9 +20,9 @@ export default function SignUp() {
   });
 
   const navigate = useNavigate();
-  const [, setCookie] = useCookies(['user']);
+  const cookies = new Cookies();
 
-  const handleSignIn = async (data: AuthFormData) => {
+  const handleSignUp = async (data: AuthFormData) => {
     const { username, email, password, confirm_password } = data;
 
     if (
@@ -47,10 +47,11 @@ export default function SignUp() {
         });
 
         const user: AuthResponse = await response.json();
-        const token = user.token;
+
         if (response.ok) {
           toast.success('Учетная запись успешно создана.');
-          setCookie('user', token);
+          cookies.set(COOKIES.TOKEN, user.token);
+          cookies.set(COOKIES.ID, user.user.id);
           navigate('/');
         } else {
           toast.error('Ошибка регистрации. Попробуйте снова.');
@@ -80,7 +81,7 @@ export default function SignUp() {
         <Box
           component="form"
           noValidate
-          onSubmit={handleSubmit(handleSignIn)}
+          onSubmit={handleSubmit(handleSignUp)}
           sx={{ mt: 1 }}
         >
           <Controller

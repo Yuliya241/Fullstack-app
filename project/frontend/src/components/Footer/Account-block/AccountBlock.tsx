@@ -1,5 +1,6 @@
 import {
   Box,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -49,7 +50,7 @@ const AccountBlock = () => {
       </Box>
       <List sx={{ paddingBottom: 0 }}>
         <ListItem disablePadding>
-          <ListItemButton component="a" href="/profile">
+          <ListItemButton component={Link} href="/profile">
             <ListItemText
               primary="Личный кабинет"
               sx={{ color: '#555', fontSize: '0.55rem' }}
@@ -57,7 +58,7 @@ const AccountBlock = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component="a" href="/basket">
+          <ListItemButton component={Link} href="/basket">
             <ListItemText
               primary="Корзина"
               sx={{ color: '#555', fontSize: '0.875rem' }}
@@ -65,7 +66,7 @@ const AccountBlock = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton component="a" href="/favorites">
+          <ListItemButton component={Link} href="/favorites">
             <ListItemText
               primary="Избранное"
               sx={{ color: '#555', fontSize: '0.875rem' }}

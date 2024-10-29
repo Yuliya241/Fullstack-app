@@ -8,17 +8,20 @@ import {
 } from '@mui/material';
 import BaseButton from '../ui/Button';
 import SignOutButton from '../ui/SignOutButton';
-import { Cookies, CookiesProvider } from 'react-cookie';
+import { useCookies, CookiesProvider } from 'react-cookie';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import PersonIcon from '@mui/icons-material/Person';
+import { COOKIES } from '../../enums/enums';
+import { selectCart } from '../../store/selectors/Selectors';
+import { useAppSelector } from '../../store/store';
 
 const Header = () => {
   const trigger = useScrollTrigger({
     threshold: 0,
     disableHysteresis: true,
   });
-  const cookies = new Cookies();
-  const token = cookies.get('userToken');
+  const [cookies] = useCookies([COOKIES.TOKEN]);
+  const cartItems = useAppSelector(selectCart());
 
   const opacify = (hex: string) => hex + 25;
   const gradient = () =>
@@ -105,7 +108,11 @@ const Header = () => {
               position: 'relative',
             }}
           >
-            <Link href="/basket" sx={{ margin: '0 0.94rem'}}>
+            <Link href="/basket" sx={{
+              margin: '0 0.94rem',
+              textDecoration: 'none',
+              position: 'relative'
+            }}>
               <LocalGroceryStoreIcon
                 sx={{
                   color: '#000000',
@@ -114,8 +121,17 @@ const Header = () => {
                   },
                 }}
               />
+              {cartItems.length ? <Box component="span" sx={{
+                backgroundColor: '#03A9F4',
+                color: '#ffffff',
+                borderRadius: '10px',
+                padding: '0 0.4rem',
+                position: 'absolute',
+                bottom: '1.55rem',
+                left: '1rem'
+              }}>{cartItems.length}</Box> : null}
             </Link>
-            {token ? (
+            {cookies.userToken ? (
               <>
                 <BaseButton href="/profile">
                   Профиль

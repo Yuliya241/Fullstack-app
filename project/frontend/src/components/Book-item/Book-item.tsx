@@ -9,7 +9,7 @@ import {
 import { Book } from '../../interfaces/interfaces';
 import { useNavigate } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { API } from '../../enums/enums';
+import { API, COOKIES } from '../../enums/enums';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { selectCartItem, selectFavoriteBook } from '../../store/selectors/Selectors';
 import {
@@ -17,9 +17,8 @@ import {
   removeFromFavorites,
 } from '../../store/slices/FavoriteSlice';
 import { Cookies } from 'react-cookie';
+import toast from 'react-hot-toast';
 import { addBookToCart, removeBookFromCart } from '../../store/slices/CartSlice';
-// import { usePostBooksToCartQuery } from '../../store/api/BooksApi';
-// import { useChangeFavoriteStatusQuery } from '../../store/api/BooksApi';
 
 const BookItem = (props: Book) => {
   const { id, image, title, author, oldprice, specialprice, regularprice } =
@@ -29,16 +28,14 @@ const BookItem = (props: Book) => {
   const isFavorite = useAppSelector(selectFavoriteBook(id));
   const isInCart = useAppSelector(selectCartItem(id));
   const cookies = new Cookies();
-  const userId = cookies.get('userId');
-  const token = cookies.get('userToken');
+  const userId = cookies.get(COOKIES.ID);
+  const token = cookies.get(COOKIES.TOKEN);
 
   const openDetailed = () => {
     navigate(
       `${location.pathname.replace('favorites', '')}book/${id}${location.search}`
     );
   };
-
-  // const { data } = useChangeFavoriteStatusQuery(id || '');
 
   const book = {
     book_id: id,
@@ -53,42 +50,52 @@ const BookItem = (props: Book) => {
 }
 
   const changeFavoriteStatus = async (book: Book) => {
-    try {
-      const response = await fetch(`${API.ALLBOOKS}api/books/${id}/favorite`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        return !isFavorite
-          ? dispatch(addToFavorites(book))
-          : dispatch(removeFromFavorites(book));
+    if (userId) {
+      try {
+        const response = await fetch(`${API.ALLBOOKS}api/books/${id}/favorite`, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (response.ok) {
+          return !isFavorite
+            ? dispatch(addToFavorites(book))
+            : dispatch(removeFromFavorites(book));
+        }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
+    } else {
+      toast.error('Для добавления в избранное, пожалуйста, войдите в учетную запись');
+      navigate('/signin');
     }
   };
 
   const addToCart = async () => {
-    try {
-      const response = await fetch(API.CART_ADD, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
-        },
-        body: JSON.stringify(book),
-      });
-
-      if (response.ok) {
-        dispatch(addBookToCart(book))
+    if (userId) {
+      try {
+        const response = await fetch(API.CART_ADD, {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(book),
+        });
+  
+        if (response.ok) {
+          dispatch(addBookToCart(book))
+        }
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
+    } else {
+      toast.error('Для добавления в корзину, пожалуйста, войдите в учетную запись');
+      navigate('/signin');
     }
   };
 
@@ -99,7 +106,7 @@ const BookItem = (props: Book) => {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Token ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 

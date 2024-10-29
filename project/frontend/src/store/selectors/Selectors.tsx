@@ -20,4 +20,4 @@ export const selectTotalPrice = () => (state: RootState) =>
 export const selectCartItem = (id: number) => (state: RootState) =>
   state.cart.cartItems.some((item: CartItem) => {
     return item.book_id === id;
-});
+  });
