@@ -1,10 +1,7 @@
 import * as yup from 'yup';
 
 export const schema = yup.object().shape({
-  username: yup
-    .string()
-    // .matches(/[A-Z]/, 'First letter should be uppercase')
-    .required('Name is required'),
+  username: yup.string().required('Name is required'),
   email: yup
     .string()
     .email('Please enter a valid email')
