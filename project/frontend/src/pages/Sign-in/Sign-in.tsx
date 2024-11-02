@@ -8,10 +8,7 @@ import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
 import { API, COOKIES } from '../../enums/enums';
 
 const SignIn = () => {
-  const {
-    control,
-    handleSubmit,
-  } = useForm<FormType>({
+  const { control, handleSubmit } = useForm<FormType>({
     mode: 'all',
   });
 

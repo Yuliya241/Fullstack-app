@@ -11,14 +11,20 @@ import { useNavigate } from 'react-router-dom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { API, COOKIES } from '../../enums/enums';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { selectCartItem, selectFavoriteBook } from '../../store/selectors/Selectors';
+import {
+  selectCartItem,
+  selectFavoriteBook,
+} from '../../store/selectors/Selectors';
 import {
   addToFavorites,
   removeFromFavorites,
 } from '../../store/slices/FavoriteSlice';
 import { Cookies } from 'react-cookie';
 import toast from 'react-hot-toast';
-import { addBookToCart, removeBookFromCart } from '../../store/slices/CartSlice';
+import {
+  addBookToCart,
+  removeBookFromCart,
+} from '../../store/slices/CartSlice';
 
 const BookItem = (props: Book) => {
   const { id, image, title, author, oldprice, specialprice, regularprice } =
@@ -46,20 +52,23 @@ const BookItem = (props: Book) => {
     specialprice: specialprice,
     regularprice: regularprice,
     quantity: 1,
-    user: userId
-}
+    user: userId,
+  };
 
   const changeFavoriteStatus = async (book: Book) => {
     if (userId) {
       try {
-        const response = await fetch(`${API.ALLBOOKS}api/books/${id}/favorite`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        });
-  
+        const response = await fetch(
+          `${API.ALLBOOKS}api/books/${id}/favorite`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
         if (response.ok) {
           return !isFavorite
             ? dispatch(addToFavorites(book))
@@ -69,7 +78,9 @@ const BookItem = (props: Book) => {
         console.error(e);
       }
     } else {
-      toast.error('Для добавления в избранное, пожалуйста, войдите в учетную запись');
+      toast.error(
+        'Для добавления в избранное, пожалуйста, войдите в учетную запись'
+      );
       navigate('/signin');
     }
   };
@@ -86,15 +97,17 @@ const BookItem = (props: Book) => {
           },
           body: JSON.stringify(book),
         });
-  
+
         if (response.ok) {
-          dispatch(addBookToCart(book))
+          dispatch(addBookToCart(book));
         }
       } catch (e) {
         console.error(e);
       }
     } else {
-      toast.error('Для добавления в корзину, пожалуйста, войдите в учетную запись');
+      toast.error(
+        'Для добавления в корзину, пожалуйста, войдите в учетную запись'
+      );
       navigate('/signin');
     }
   };
@@ -111,7 +124,7 @@ const BookItem = (props: Book) => {
       });
 
       if (response.ok) {
-        dispatch(removeBookFromCart(book))
+        dispatch(removeBookFromCart(book));
       }
     } catch (e) {
       console.error(e);
@@ -239,51 +252,51 @@ const BookItem = (props: Book) => {
           sx={{ justifyContent: 'center', alignItems: 'center' }}
         >
           {!isInCart ? (
-          <Button
-          onClick={addToCart}
-          variant="outlined"
-          sx={{
-            color: '#23b4ca',
-            marginRight: '3px',
-            transition: 'all 0.4s ease',
-            '.MuiButtonBase-root': {
-              color: '#23b4ca',
-            },
-            '&.MuiButton-outlinedPrimary': {
-              border: '1px solid #23b4ca',
-            },
-            '&:hover': {
-              color: '#ffffff',
-              backgroundColor: '#23b4ca',
-            },
-          }}
-        >
-          В корзину
-        </Button>
+            <Button
+              onClick={addToCart}
+              variant="outlined"
+              sx={{
+                color: '#23b4ca',
+                marginRight: '3px',
+                transition: 'all 0.4s ease',
+                '.MuiButtonBase-root': {
+                  color: '#23b4ca',
+                },
+                '&.MuiButton-outlinedPrimary': {
+                  border: '1px solid #23b4ca',
+                },
+                '&:hover': {
+                  color: '#ffffff',
+                  backgroundColor: '#23b4ca',
+                },
+              }}
+            >
+              В корзину
+            </Button>
           ) : (
             <Button
-            onClick={deleteFromCart}
-            variant="contained"
-            sx={{
-              color: 'ffffff',
-              marginRight: '3px',
-              backgroundColor: '#23b4ca',
-              transition: 'all 0.4s ease',
-              '.MuiButtonBase-root': {
-                color: '#23b4ca',
-              },
-              '&.MuiButton-outlinedPrimary': {
-                border: '1px solid #23b4ca',
-              },
-              '&:hover': {
-                color: '#23b4ca',
-                backgroundColor: 'transparent',
-                border: '1px solid #23b4ca',
-              },
-            }}
-          >
-            В корзине
-          </Button>
+              onClick={deleteFromCart}
+              variant="contained"
+              sx={{
+                color: 'ffffff',
+                marginRight: '3px',
+                backgroundColor: '#23b4ca',
+                transition: 'all 0.4s ease',
+                '.MuiButtonBase-root': {
+                  color: '#23b4ca',
+                },
+                '&.MuiButton-outlinedPrimary': {
+                  border: '1px solid #23b4ca',
+                },
+                '&:hover': {
+                  color: '#23b4ca',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #23b4ca',
+                },
+              }}
+            >
+              В корзине
+            </Button>
           )}
           <FavoriteIcon
             onClick={() => changeFavoriteStatus(props)}

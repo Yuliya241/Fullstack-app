@@ -1,6 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { API, COOKIES } from '../../enums/enums';
-import { AuthResponse, Book, BookResponse, CartItem, FavoriteResponse } from '../../interfaces/interfaces';
+import {
+  AuthResponse,
+  Book,
+  BookResponse,
+  CartItem,
+  FavoriteResponse,
+} from '../../interfaces/interfaces';
 import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
@@ -29,7 +35,7 @@ export const booksApi = createApi({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-    }),
+      }),
     }),
 
     getProfile: builder.query<AuthResponse, void>({
@@ -39,7 +45,7 @@ export const booksApi = createApi({
         headers: {
           Authorization: `Token ${token}`,
         },
-    }),
+      }),
     }),
   }),
 });
@@ -49,5 +55,5 @@ export const {
   useGetDetailsBookQuery,
   useGetUserCartQuery,
   useGetFavoriteBooksQuery,
-  useGetProfileQuery
+  useGetProfileQuery,
 } = booksApi;

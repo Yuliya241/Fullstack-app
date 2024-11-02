@@ -11,10 +11,16 @@ import {
   removeFromFavorites,
 } from '../../store/slices/FavoriteSlice';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-import { selectCartItem, selectFavoriteBook } from '../../store/selectors/Selectors';
+import {
+  selectCartItem,
+  selectFavoriteBook,
+} from '../../store/selectors/Selectors';
 import { Cookies } from 'react-cookie';
 import toast from 'react-hot-toast';
-import { addBookToCart, removeBookFromCart } from '../../store/slices/CartSlice';
+import {
+  addBookToCart,
+  removeBookFromCart,
+} from '../../store/slices/CartSlice';
 
 const DetailsBook = () => {
   const { id } = useParams();
@@ -38,8 +44,8 @@ const DetailsBook = () => {
     specialprice: data?.specialprice || 0,
     regularprice: data?.regularprice || 0,
     quantity: 1,
-    user: userId
-}
+    user: userId,
+  };
 
   const closeDetailed = () => {
     setIsOpen(false);
@@ -49,14 +55,17 @@ const DetailsBook = () => {
   const changeFavoriteStatus = async (book: Book) => {
     if (userId) {
       try {
-        const response = await fetch(`${API.ALLBOOKS}api/books/${id}/favorite`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        });
-  
+        const response = await fetch(
+          `${API.ALLBOOKS}api/books/${id}/favorite`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
         if (response.ok) {
           return !isFavorite
             ? dispatch(addToFavorites(book))
@@ -66,7 +75,9 @@ const DetailsBook = () => {
         console.error(e);
       }
     } else {
-      toast.error('Для добавления в избранное, пожалуйста, войдите в учетную запись');
+      toast.error(
+        'Для добавления в избранное, пожалуйста, войдите в учетную запись'
+      );
       navigate('/signin');
     }
   };
@@ -83,15 +94,17 @@ const DetailsBook = () => {
           },
           body: JSON.stringify(book),
         });
-  
+
         if (response.ok) {
-          dispatch(addBookToCart(book))
+          dispatch(addBookToCart(book));
         }
       } catch (e) {
         console.error(e);
       }
     } else {
-      toast.error('Для добавления в корзину, пожалуйста, войдите в учетную запись');
+      toast.error(
+        'Для добавления в корзину, пожалуйста, войдите в учетную запись'
+      );
       navigate('/signin');
     }
   };
@@ -108,7 +121,7 @@ const DetailsBook = () => {
       });
 
       if (response.ok) {
-        dispatch(removeBookFromCart(book))
+        dispatch(removeBookFromCart(book));
       }
     } catch (e) {
       console.error(e);
@@ -243,34 +256,34 @@ const DetailsBook = () => {
                     </Typography>
                   )}
                 </Box>
-                  {!isInCart ? (
+                {!isInCart ? (
                   <Button
-                      variant="contained"
-                      onClick={addToCart}
-                  sx={{
-                    color: '#555',
-                    fontWeight: 'bold',
-                    fontSize: '16px',
-                    borderRadius: '4px',
-                    backgroundColor: '#FFC000',
-                    transition: 'all 0.4s ease',
-                    '.MuiButtonBase-root': {
+                    variant="contained"
+                    onClick={addToCart}
+                    sx={{
                       color: '#555',
-                    },
-                    '&.MuiButton-outlinedPrimary': {
-                      border: 'none',
-                    },
-                    '&:hover': {
-                      backgroundColor: '#e7e7e7',
-                    },
-                  }}
-                >
-                  Добавить в корзину
+                      fontWeight: 'bold',
+                      fontSize: '16px',
+                      borderRadius: '4px',
+                      backgroundColor: '#FFC000',
+                      transition: 'all 0.4s ease',
+                      '.MuiButtonBase-root': {
+                        color: '#555',
+                      },
+                      '&.MuiButton-outlinedPrimary': {
+                        border: 'none',
+                      },
+                      '&:hover': {
+                        backgroundColor: '#e7e7e7',
+                      },
+                    }}
+                  >
+                    Добавить в корзину
                   </Button>
-                  ) : (
-                    <Button
-                        variant="contained"
-                        onClick={deleteFromCart}
+                ) : (
+                  <Button
+                    variant="contained"
+                    onClick={deleteFromCart}
                     sx={{
                       color: '#555',
                       fontWeight: 'bold',
@@ -291,9 +304,9 @@ const DetailsBook = () => {
                   >
                     Удалить из корзины
                   </Button>
-                  )}
-                  <Button
-                    onClick={() => changeFavoriteStatus(data as Book)}
+                )}
+                <Button
+                  onClick={() => changeFavoriteStatus(data as Book)}
                   variant="contained"
                   sx={{
                     color: '#555',

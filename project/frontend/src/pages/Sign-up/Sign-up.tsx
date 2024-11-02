@@ -8,10 +8,7 @@ import { API, COOKIES } from '../../enums/enums';
 import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
 
 export default function SignUp() {
-  const {
-    control,
-    handleSubmit,
-  } = useForm<FormType>({
+  const { control, handleSubmit } = useForm<FormType>({
     mode: 'all',
   });
 

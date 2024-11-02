@@ -4,7 +4,7 @@ import {
   Toolbar,
   Box,
   Typography,
-  Link
+  Link,
 } from '@mui/material';
 import BaseButton from '../ui/Button';
 import SignOutButton from '../ui/SignOutButton';
@@ -108,11 +108,14 @@ const Header = () => {
               position: 'relative',
             }}
           >
-            <Link href="/basket" sx={{
-              margin: '0 0.94rem',
-              textDecoration: 'none',
-              position: 'relative'
-            }}>
+            <Link
+              href="/basket"
+              sx={{
+                margin: '0 0.94rem',
+                textDecoration: 'none',
+                position: 'relative',
+              }}
+            >
               <LocalGroceryStoreIcon
                 sx={{
                   color: '#000000',
@@ -121,15 +124,22 @@ const Header = () => {
                   },
                 }}
               />
-              {cartItems.length ? <Box component="span" sx={{
-                backgroundColor: '#03A9F4',
-                color: '#ffffff',
-                borderRadius: '10px',
-                padding: '0 0.4rem',
-                position: 'absolute',
-                bottom: '1.55rem',
-                left: '1rem'
-              }}>{cartItems.length}</Box> : null}
+              {cartItems.length ? (
+                <Box
+                  component="span"
+                  sx={{
+                    backgroundColor: '#03A9F4',
+                    color: '#ffffff',
+                    borderRadius: '10px',
+                    padding: '0 0.4rem',
+                    position: 'absolute',
+                    bottom: '1.55rem',
+                    left: '1rem',
+                  }}
+                >
+                  {cartItems.length}
+                </Box>
+              ) : null}
             </Link>
             {cookies.userToken ? (
               <>

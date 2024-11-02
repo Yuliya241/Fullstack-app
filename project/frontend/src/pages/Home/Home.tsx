@@ -13,10 +13,14 @@ import { selectSearch } from '../../store/selectors/Selectors';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { getBooks, setSearch } from '../../store/slices/SearchSlice';
 import { getFavorites } from '../../store/slices/FavoriteSlice';
-import { useGetAllBooksQuery, useGetFavoriteBooksQuery, useGetUserCartQuery } from '../../store/api/BooksApi';
+import {
+  useGetAllBooksQuery,
+  useGetFavoriteBooksQuery,
+  useGetUserCartQuery,
+} from '../../store/api/BooksApi';
 import { Cookies, useCookies } from 'react-cookie';
 import { getCartItems } from '../../store/slices/CartSlice';
-import { skipToken } from '@reduxjs/toolkit/query/react'
+import { skipToken } from '@reduxjs/toolkit/query/react';
 
 export default function Home() {
   const [, setCookie] = useCookies(['main']);
@@ -56,7 +60,16 @@ export default function Home() {
       dispatch(getCartItems([]));
       dispatch(getFavorites([]));
     }
-  }, [page, setSearchParams, data, dispatch, userId, token, cartItems, favoriteItems]);
+  }, [
+    page,
+    setSearchParams,
+    data,
+    dispatch,
+    userId,
+    token,
+    cartItems,
+    favoriteItems,
+  ]);
 
   const clickSearchButton = (): void => {
     setPage(1);
@@ -64,7 +77,7 @@ export default function Home() {
   };
 
   return (
-      <Box
+    <Box
       sx={{
         display: 'flex',
         alignItems: 'center',

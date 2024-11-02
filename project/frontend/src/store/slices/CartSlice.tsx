@@ -17,22 +17,24 @@ export const cartSlice = createSlice({
       let sum = 0;
       state.cartItems.map((book: CartItem) => {
         if (book.regularprice) {
-        sum += book.regularprice*book?.quantity
+          sum += book.regularprice * book?.quantity;
         } else {
-        sum += book.specialprice*book?.quantity
-      }
+          sum += book.specialprice * book?.quantity;
+        }
       });
       state.total = sum;
     },
     removeBookFromCart: (state, action: PayloadAction<CartItem>) => {
-      state.cartItems = state.cartItems.filter((item) => item.book_id !== action.payload.book_id);
+      state.cartItems = state.cartItems.filter(
+        (item) => item.book_id !== action.payload.book_id
+      );
       let sum = 0;
       state.cartItems.map((book: CartItem) => {
         if (book.regularprice) {
-        sum += book.regularprice*book?.quantity
+          sum += book.regularprice * book?.quantity;
         } else {
-        sum += book.specialprice*book?.quantity
-      }
+          sum += book.specialprice * book?.quantity;
+        }
       });
       state.total = sum;
     },
@@ -41,10 +43,10 @@ export const cartSlice = createSlice({
       let sum = 0;
       state.cartItems.map((book: CartItem) => {
         if (book.regularprice) {
-        sum += book.regularprice*book?.quantity
+          sum += book.regularprice * book?.quantity;
         } else {
-        sum += book.specialprice*book?.quantity
-      }
+          sum += book.specialprice * book?.quantity;
+        }
       });
       state.total = sum;
     },
@@ -52,23 +54,30 @@ export const cartSlice = createSlice({
       state.quantity = action.payload;
     },
     setSelectedBook: (state, action: PayloadAction<number>) => {
-      const book = state.cartItems.find((book: CartItem) => book.book_id === action.payload);
+      const book = state.cartItems.find(
+        (book: CartItem) => book.book_id === action.payload
+      );
       if (book) {
         book.quantity = state.quantity;
-        state.selectBook = book
+        state.selectBook = book;
       }
       let sum = 0;
       state.cartItems.map((book: CartItem) => {
         if (book.regularprice) {
-        sum += book.regularprice*book?.quantity
+          sum += book.regularprice * book?.quantity;
         } else {
-        sum += book.specialprice*book?.quantity
-      }
+          sum += book.specialprice * book?.quantity;
+        }
       });
       state.total = sum;
     },
   },
 });
 
-export const { addBookToCart, removeBookFromCart, getCartItems, setQuantity, setSelectedBook } =
-  cartSlice.actions;
+export const {
+  addBookToCart,
+  removeBookFromCart,
+  getCartItems,
+  setQuantity,
+  setSelectedBook,
+} = cartSlice.actions;

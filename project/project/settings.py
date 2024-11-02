@@ -147,8 +147,4 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50,
 }
 
-CART_SESSION_ID = 'cart'
-
-LOGIN_URL = 'api/login/'
-
 CORS_ALLOW_CREDENTIALS = True
