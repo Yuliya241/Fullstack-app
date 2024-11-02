@@ -1,9 +1,7 @@
-// import { yupResolver } from '@hookform/resolvers/yup';
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormType } from '../../types/types';
-// import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
 import { Cookies } from 'react-cookie';
 import { AuthFormData, AuthResponse } from '../../interfaces/interfaces';
@@ -13,9 +11,7 @@ const SignIn = () => {
   const {
     control,
     handleSubmit,
-    // formState: { errors, isValid },
   } = useForm<FormType>({
-    // resolver: yupResolver<FormType>(schema),
     mode: 'all',
   });
 
@@ -88,8 +84,6 @@ const SignIn = () => {
                 id="username"
                 label="Имя"
                 autoComplete="username"
-                // error={!!errors.username}
-                // helperText={errors.username?.message}
               />
             )}
           />
@@ -107,8 +101,6 @@ const SignIn = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                // error={!!errors.password}
-                // helperText={errors.password?.message}
               />
             )}
           />
@@ -116,7 +108,6 @@ const SignIn = () => {
             type="submit"
             fullWidth
             variant="contained"
-            // disabled={!isValid}
             sx={{
               mt: 3,
               transition: 'all 0.4s ease',

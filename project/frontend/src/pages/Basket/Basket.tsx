@@ -168,7 +168,7 @@ const Basket = () => {
                        
                       }}>
                         <Typography component="p" sx={{fontWeight: '900'}}>
-                          Total Amount:{' '}
+                          Общая сумма:{' '}
                           <Typography component="span" sx={{
                             color: '#03A9F4',
                             fontWeight: '600',

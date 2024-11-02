@@ -20,7 +20,7 @@ def loginApi(request):
       'email': user.email,
       'id': user.id,
     },
-    'token': token
+    'token': token,
   })
 
 @api_view(['GET'])

@@ -1,9 +1,7 @@
-// import { yupResolver } from '@hookform/resolvers/yup';
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { FormType } from '../../types/types';
-// import { schema } from '../../utils/validation';
 import toast from 'react-hot-toast';
 import { Cookies } from 'react-cookie';
 import { API, COOKIES } from '../../enums/enums';
@@ -13,9 +11,7 @@ export default function SignUp() {
   const {
     control,
     handleSubmit,
-    // formState: { isValid },
   } = useForm<FormType>({
-    // resolver: yupResolver<FormType>(schema),
     mode: 'all',
   });
 
@@ -97,8 +93,6 @@ export default function SignUp() {
                 id="username"
                 label="Имя"
                 autoComplete="username"
-                // error={!!errors.username}
-                // helperText={errors.username?.message}
               />
             )}
           />
@@ -115,8 +109,6 @@ export default function SignUp() {
                 id="email"
                 label="Электронная почта"
                 autoComplete="email"
-                // error={!!errors.email}
-                // helperText={errors.email ? <>{t(errors.email.message)}</> : null}
               />
             )}
           />
@@ -134,8 +126,6 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
-                // error={!!errors.password}
-                // helperText={errors.password?.message}
               />
             )}
           />
@@ -153,8 +143,6 @@ export default function SignUp() {
                 type="password"
                 id="confirmPassword"
                 autoComplete="new-password"
-                // error={!!errors.confirmPassword}
-                // helperText={errors.confirmPassword ? <>{t(errors.confirmPassword.message)}</> : null}
               />
             )}
           />
@@ -162,7 +150,6 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            // disabled={!isValid}
             sx={{
               mt: 3,
               transition: 'all 0.4s ease',

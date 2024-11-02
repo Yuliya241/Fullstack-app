@@ -50,6 +50,10 @@ INSTALLED_APPS = [
 
 REST_AUTH_TOKEN_MODEL = 'knox.models.AuthToken'
 
+REST_KNOX = {
+  'TOKEN_TTL': None,
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
